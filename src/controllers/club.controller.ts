@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { clubAdd } from "../services/club.service.js";
+import { clubAdd, clubUpdate } from "../services/club.service.js";
 import { clubDtos } from "../dtos/club.dto.js";
 import { StatusCodes } from "http-status-codes";
 
@@ -15,4 +15,24 @@ export const handleClubAdd = async (
     clubName: clubs.name,
     createdAt: clubs.created_at,
   });
+};
+
+export const handleClubUpdate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  const userId = (req as any).user.id;
+  const clubs = await clubUpdate(
+    clubDtos(req.body),
+    userId,
+    Number(req.params.clubId),
+  );
+  res
+    .status(StatusCodes.OK)
+    .success("동호회 정보가 성공적으로 수정되었습니다", {
+      Id: clubs.id,
+      clubName: clubs.name,
+      createdAt: clubs.created_at,
+    });
 };

@@ -53,3 +53,34 @@ export const addClub = async (
     return club;
   });
 };
+
+export const updateClub = async (
+  clubData: clubRequest,
+  clubId: number,
+  regionId: bigint,
+  sportTypeId: bigint,
+) => {
+  return await prisma.$transaction(async (tx) => {
+    const club = await tx.clubs.update({
+      where: {
+        id: BigInt(clubId),
+      },
+      data: {
+        name: clubData.clubName,
+        age: clubData.ageGroup,
+        capacity: clubData.maxMembers,
+        activity_frequency: clubData.activityFrequency,
+        join_requirement: clubData.joinRequirement,
+        summary: clubData.description,
+        level: clubData.level,
+        contact_number: clubData.contact,
+        homepage_url: clubData.hompageUrl ?? null,
+        region_id: regionId,
+        sport_type_id: sportTypeId,
+        updated_at: new Date(),
+      },
+    });
+
+    return club;
+  });
+};
