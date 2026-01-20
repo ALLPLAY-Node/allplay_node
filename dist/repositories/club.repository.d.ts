@@ -14,7 +14,16 @@ interface clubRequest {
     contact: string;
     hompageUrl?: string;
 }
-export declare const addClub: (clubData: clubRequest, userId: number) => Promise<{
+export declare const findRegionByCityAndDistrict: (city: string, district: string) => Promise<{
+    id: bigint;
+    city: string | null;
+    district: string | null;
+} | null>;
+export declare const findSportByName: (sportType: string) => Promise<{
+    id: bigint;
+    sport_type: string | null;
+} | null>;
+export declare const addClub: (clubData: clubRequest, userId: number, regionId: bigint, sportTypeId: bigint) => Promise<{
     id: bigint;
     name: string | null;
     capacity: number | null;

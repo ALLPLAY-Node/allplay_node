@@ -1,18 +1,18 @@
 import { prisma } from "../db.config.js";
 import { Age, Level } from "@prisma/client";
-export const addClub = async (clubData, userId) => {
+export const findRegionByCityAndDistrict = async (city, district) => {
     const region = await prisma.region.findFirst({
-        where: { city: clubData.city, district: clubData.district },
+        where: { city, district },
     });
-    if (!region) {
-        throw new Error("Region not found");
-    }
-    const sportType = await prisma.sportType.findFirst({
-        where: { sport_type: clubData.sportType },
+    return region;
+};
+export const findSportByName = async (sportType) => {
+    const sport = await prisma.sportType.findFirst({
+        where: { sport_type: sportType },
     });
-    if (!sportType) {
-        throw new Error("Sport type not found");
-    }
+    return sport;
+};
+export const addClub = async (clubData, userId, regionId, sportTypeId) => {
     return await prisma.$transaction(async (tx) => {
         const club = await tx.clubs.create({
             data: {
@@ -25,15 +25,15 @@ export const addClub = async (clubData, userId) => {
                 level: clubData.level,
                 contact_number: clubData.contact,
                 homepage_url: clubData.hompageUrl ?? null,
-                region_id: region.id,
-                sport_type_id: sportType.id,
+                region_id: regionId,
+                sport_type_id: sportTypeId,
                 created_at: new Date(),
             },
         });
         await tx.userClubs.create({
             data: {
                 user_id: BigInt(userId),
-                club_id: BigInt(club.id),
+                club_id: club.id,
                 is_leader: true,
                 created_at: new Date(),
             },
