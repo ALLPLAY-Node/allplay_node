@@ -3,7 +3,6 @@ import express from "express";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import clubRouter from "./routes/club.routes.js";
-import type { Request, Response, NextFunction } from "express";
 
 dotenv.config();
 

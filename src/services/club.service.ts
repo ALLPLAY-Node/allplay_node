@@ -2,6 +2,10 @@ import { addClub, updateClub } from "../repositories/club.repository.js";
 import { findRegionByCityAndDistrict } from "../repositories/region.repository.js";
 import { findSportByName } from "../repositories/sport-type.repository.js";
 import { getClubLeaderByClubId } from "../repositories/club-user.repository.js";
+import {
+  joinClub,
+  isApplied,
+} from "../repositories/join-request.repository.js";
 import { Age, Level } from "@prisma/client";
 
 interface clubRequest {
@@ -61,4 +65,13 @@ export const clubUpdate = async (
   }
   const updatedClub = await updateClub(clubData, clubId, region.id, sport.id);
   return updatedClub;
+};
+
+export const clubJoin = async (userId: number, clubId: number) => {
+  const isApply = await isApplied(userId, clubId);
+  if (isApply) {
+    throw new Error("already applied");
+  }
+  const joinRequest = await joinClub(userId, clubId);
+  return joinRequest;
 };

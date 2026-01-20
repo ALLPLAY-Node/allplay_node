@@ -1,4 +1,4 @@
-import { clubAdd, clubUpdate } from "../services/club.service.js";
+import { clubAdd, clubUpdate, clubJoin } from "../services/club.service.js";
 import { clubDtos } from "../dtos/club.dto.js";
 import { StatusCodes } from "http-status-codes";
 export const handleClubAdd = async (req, res, next) => {
@@ -19,6 +19,15 @@ export const handleClubUpdate = async (req, res, next) => {
         Id: clubs.id,
         clubName: clubs.name,
         createdAt: clubs.created_at,
+    });
+};
+export const handleClubJoin = async (req, res, next) => {
+    const userId = req.user.id;
+    const joinRequest = await clubJoin(userId, Number(req.params.clubId));
+    res.status(StatusCodes.OK).success("가입 신청 완료", {
+        clubId: joinRequest.club_id,
+        userId: joinRequest.user_id,
+        createdAt: joinRequest.created_at,
     });
 };
 //# sourceMappingURL=club.controller.js.map
