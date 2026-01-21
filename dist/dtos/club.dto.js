@@ -16,6 +16,22 @@ export const clubDtos = (data) => {
         hompageUrl: data.hompageUrl,
     };
 };
+export const clubListDtos = (data) => {
+    const items = [];
+    for (const item of data) {
+        items.push({
+            id: item.id,
+            clubName: item.name,
+            clubPhotoURL: item.photos,
+            description: item.summary,
+            joinRequirement: item.join_requirement,
+            region: item.region?.city + " " + item.region?.district,
+            maxMembers: item.capacity,
+            currentMembers: item.current_members,
+        });
+    }
+    return items;
+};
 export const joinRequestDtos = (data) => {
     const items = [];
     for (const item of data) {

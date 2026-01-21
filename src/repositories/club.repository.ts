@@ -84,3 +84,32 @@ export const updateClub = async (
     return club;
   });
 };
+
+export const findClubs = async (
+  regionId: any,
+  ageGroup: any,
+  keyword: any,
+  sportId: any,
+  cursor: any,
+): Promise<any[]> => {
+  const clubs = await prisma.clubs.findMany({
+    where: {
+      ...(cursor ? { id: { gt: Number(cursor) } } : {}),
+      ...(regionId ? { region_id: regionId } : {}),
+      ...(ageGroup ? { age: ageGroup } : {}),
+      ...(keyword ? { name: { contains: keyword } } : {}),
+      ...(sportId ? { sport_type_id: sportId } : {}),
+    },
+    include: {
+      region: true,
+      sport_type: true,
+      photos: true,
+    },
+    take: 11,
+    orderBy: {
+      id: "asc",
+    },
+  });
+
+  return clubs;
+};

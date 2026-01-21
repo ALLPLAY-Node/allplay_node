@@ -1,4 +1,8 @@
-import { addClub, updateClub } from "../repositories/club.repository.js";
+import {
+  addClub,
+  updateClub,
+  findClubs,
+} from "../repositories/club.repository.js";
 import { findRegionByCityAndDistrict } from "../repositories/region.repository.js";
 import { findSportByName } from "../repositories/sport-type.repository.js";
 import {
@@ -87,6 +91,24 @@ export const clubUpdate = async (
   }
   const updatedClub = await updateClub(clubData, clubId, region.id, sport.id);
   return updatedClub;
+};
+
+export const getClubs = async (
+  regionId: any,
+  ageGroup: any,
+  keyword: any,
+  sportId: any,
+  cursor: any,
+): Promise<{ clubs: any[]; hasNext: boolean }> => {
+  const clubs = await findClubs(regionId, ageGroup, keyword, sportId, cursor);
+  let hasNext;
+  if (clubs.length > 11) {
+    clubs.pop();
+    hasNext = true;
+  } else {
+    hasNext = false;
+  }
+  return { clubs, hasNext };
 };
 
 export const clubJoin = async (userId: number, clubId: number) => {

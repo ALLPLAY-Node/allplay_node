@@ -46,5 +46,6 @@ export declare const updateClub: (clubData: clubRequest, clubId: number, regionI
     region_id: bigint;
     sport_type_id: bigint;
 }>;
+export declare const findClubs: (regionId: any, ageGroup: any, keyword: any, sportId: any, cursor: any) => Promise<any[]>;
 export {};
 //# sourceMappingURL=club.repository.d.ts.map

@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  handleGetClubs,
   handleClubAdd,
   handleClubUpdate,
   handleClubJoin,
@@ -10,19 +11,21 @@ import {
 import { isLogin } from "../middleware/auth.js";
 const router = express.Router();
 
-router.post("/clubs", isLogin, handleClubAdd);
-
-router.put("/clubs/:clubId", isLogin, handleClubUpdate);
-
-router.post("/clubs/:clubId/join", isLogin, handleClubJoin);
+router.get("/clubs", handleGetClubs);
 
 router.get("/clubs/:clubId/join-requests", isLogin, handleGetJoinRequests);
+
+router.post("/clubs", isLogin, handleClubAdd);
+
+router.post("/clubs/:clubId/join", isLogin, handleClubJoin);
 
 router.post(
   "/clubs/:clubId/join-requests/:requestId",
   isLogin,
   handleApproveJoinRequest,
 );
+
+router.put("/clubs/:clubId", isLogin, handleClubUpdate);
 
 router.delete("/clubs/:clubId/join", isLogin, handleLeaveClub);
 

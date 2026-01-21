@@ -46,6 +46,10 @@ export declare const clubUpdate: (clubData: clubRequest, userId: number, clubId:
     region_id: bigint;
     sport_type_id: bigint;
 }>;
+export declare const getClubs: (regionId: any, ageGroup: any, keyword: any, sportId: any, cursor: any) => Promise<{
+    clubs: any[];
+    hasNext: boolean;
+}>;
 export declare const clubJoin: (userId: number, clubId: number) => Promise<{
     id: bigint;
     created_at: Date | null;

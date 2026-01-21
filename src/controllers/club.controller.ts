@@ -6,8 +6,9 @@ import {
   getJoinRequests,
   approveJoinRequest,
   leaveClub,
+  getClubs,
 } from "../services/club.service.js";
-import { clubDtos, joinRequestDtos } from "../dtos/club.dto.js";
+import { clubDtos, joinRequestDtos, clubListDtos } from "../dtos/club.dto.js";
 import { StatusCodes } from "http-status-codes";
 
 export const handleClubAdd = async (
@@ -42,6 +43,25 @@ export const handleClubUpdate = async (
       clubName: clubs.name,
       createdAt: clubs.created_at,
     });
+};
+
+export const handleGetClubs = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  const regionId = req.query.regionId;
+  const ageGroup = req.query.ageGroup;
+  const keyword = req.query.keyword;
+  const sportId = req.query.sportId;
+  const cursor = req.query.cursor;
+  const data = await getClubs(regionId, ageGroup, keyword, sportId, cursor);
+  const len: number = data.clubs.length - 1;
+  res.status(StatusCodes.OK).success("동호회 목록", {
+    items: clubListDtos(data.clubs),
+    cursor: len >= 0 ? data.clubs[len].id : null,
+    hasNext: data.hasNext,
+  });
 };
 
 export const handleClubJoin = async (

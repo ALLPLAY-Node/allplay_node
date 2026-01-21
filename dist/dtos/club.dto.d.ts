@@ -29,6 +29,16 @@ export declare const clubDtos: (data: clubRequest) => {
     contact: string;
     hompageUrl: string;
 };
+export declare const clubListDtos: (data: any) => {
+    id: any;
+    clubName: any;
+    clubPhotoURL: any;
+    description: any;
+    joinRequirement: any;
+    region: string;
+    maxMembers: any;
+    currentMembers: any;
+}[];
 export declare const joinRequestDtos: (data: any) => {
     id: any;
     clubId: any;
