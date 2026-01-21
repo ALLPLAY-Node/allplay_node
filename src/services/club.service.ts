@@ -102,7 +102,7 @@ export const getClubs = async (
 ): Promise<{ clubs: any[]; hasNext: boolean }> => {
   const clubs = await findClubs(regionId, ageGroup, keyword, sportId, cursor);
   let hasNext;
-  if (clubs.length > 11) {
+  if (clubs.length > 10) {
     clubs.pop();
     hasNext = true;
   } else {
