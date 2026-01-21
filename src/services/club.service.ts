@@ -2,6 +2,7 @@ import {
   addClub,
   updateClub,
   findClubs,
+  findClubById,
 } from "../repositories/club.repository.js";
 import { findRegionByCityAndDistrict } from "../repositories/region.repository.js";
 import { findSportByName } from "../repositories/sport-type.repository.js";
@@ -109,6 +110,11 @@ export const getClubs = async (
     hasNext = false;
   }
   return { clubs, hasNext };
+};
+
+export const getClub = async (clubId: number) => {
+  const club = await findClubById(clubId);
+  return club;
 };
 
 export const clubJoin = async (userId: number, clubId: number) => {

@@ -95,15 +95,16 @@ export const findClubs = async (
   const clubs = await prisma.clubs.findMany({
     where: {
       ...(cursor ? { id: { gt: Number(cursor) } } : {}),
-      ...(regionId ? { region_id: regionId } : {}),
-      ...(ageGroup ? { age: ageGroup } : {}),
-      ...(keyword ? { name: { contains: keyword } } : {}),
-      ...(sportId ? { sport_type_id: sportId } : {}),
+      ...(regionId ? { region_id: BigInt(regionId as string) } : {}),
+      ...(ageGroup ? { age: ageGroup as Age } : {}), // Age enum 매칭
+      ...(keyword ? { name: { contains: keyword as string } } : {}),
+      ...(sportId ? { sport_type_id: BigInt(sportId as string) } : {}),
     },
     include: {
       region: true,
       sport_type: true,
       photos: true,
+      _count: { select: { members: true } },
     },
     take: 11,
     orderBy: {
@@ -112,4 +113,32 @@ export const findClubs = async (
   });
 
   return clubs;
+};
+
+export const findClubById = async (clubId: number) => {
+  const club = await prisma.clubs.findUnique({
+    where: {
+      id: BigInt(clubId),
+    },
+    include: {
+      region: true,
+      members: {
+        where: {
+          is_leader: true,
+        },
+        select: {
+          user: {
+            select: {
+              name: true,
+              introduce: true,
+            },
+          },
+        },
+      },
+      photos: true,
+      _count: { select: { members: true } },
+    },
+  });
+
+  return club;
 };

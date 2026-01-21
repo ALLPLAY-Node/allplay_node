@@ -7,8 +7,14 @@ import {
   approveJoinRequest,
   leaveClub,
   getClubs,
+  getClub,
 } from "../services/club.service.js";
-import { clubDtos, joinRequestDtos, clubListDtos } from "../dtos/club.dto.js";
+import {
+  clubDtos,
+  joinRequestDtos,
+  clubListDtos,
+  clubResponseDto,
+} from "../dtos/club.dto.js";
 import { StatusCodes } from "http-status-codes";
 
 export const handleClubAdd = async (
@@ -62,6 +68,16 @@ export const handleGetClubs = async (
     cursor: len >= 0 ? data.clubs[len].id : null,
     hasNext: data.hasNext,
   });
+};
+
+export const handleGetClub = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  const clubId = Number(req.params.clubId);
+  const club = await getClub(clubId);
+  res.status(StatusCodes.OK).success("동호회 정보", clubResponseDto(club));
 };
 
 export const handleClubJoin = async (

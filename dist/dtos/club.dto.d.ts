@@ -45,4 +45,17 @@ export declare const joinRequestDtos: (data: any) => {
     userId: any;
     applicationDate: any;
 }[];
+export declare const clubResponseDto: (data: any) => {
+    id: any;
+    clubName: any;
+    clubPhotoURL: any;
+    operator: any;
+    region: string;
+    level: any;
+    maxMembers: any;
+    currentMembers: any;
+    joinRequirement: any;
+    contact: any;
+    hompageURL: any;
+};
 //# sourceMappingURL=club.dto.d.ts.map

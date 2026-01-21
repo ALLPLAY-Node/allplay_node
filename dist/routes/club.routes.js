@@ -1,8 +1,9 @@
 import express from "express";
-import { handleGetClubs, handleClubAdd, handleClubUpdate, handleClubJoin, handleGetJoinRequests, handleApproveJoinRequest, handleLeaveClub, } from "../controllers/club.controller.js";
+import { handleGetClubs, handleGetClub, handleClubAdd, handleClubUpdate, handleClubJoin, handleGetJoinRequests, handleApproveJoinRequest, handleLeaveClub, } from "../controllers/club.controller.js";
 import { isLogin } from "../middleware/auth.js";
 const router = express.Router();
 router.get("/clubs", handleGetClubs);
+router.get("/clubs/:clubId", handleGetClub);
 router.get("/clubs/:clubId/join-requests", isLogin, handleGetJoinRequests);
 router.post("/clubs", isLogin, handleClubAdd);
 router.post("/clubs/:clubId/join", isLogin, handleClubJoin);

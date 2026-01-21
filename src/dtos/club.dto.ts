@@ -45,7 +45,7 @@ export const clubListDtos = (data: any) => {
       joinRequirement: item.join_requirement,
       region: item.region?.city + " " + item.region?.district,
       maxMembers: item.capacity,
-      currentMembers: item.current_members,
+      currentMembers: item._count.members,
     });
   }
   return items;
@@ -62,4 +62,20 @@ export const joinRequestDtos = (data: any) => {
     });
   }
   return items;
+};
+
+export const clubResponseDto = (data: any) => {
+  return {
+    id: data.id,
+    clubName: data.name,
+    clubPhotoURL: data.photos,
+    operator: data.members[0].user,
+    region: data.region?.city + " " + data.region?.district,
+    level: data.level,
+    maxMembers: data.capacity,
+    currentMembers: data._count.members,
+    joinRequirement: data.join_requirement,
+    contact: data.contact_number,
+    hompageURL: data.homepage_url,
+  };
 };
