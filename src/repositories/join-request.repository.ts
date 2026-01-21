@@ -23,3 +23,13 @@ export const joinClub = async (userId: number, clubId: number) => {
   });
   return join;
 };
+
+export const findJoinRequests = async (clubId: number) => {
+  const joinRequests = await prisma.joinRequest.findMany({
+    where: {
+      club_id: BigInt(clubId),
+    },
+  });
+
+  return joinRequests;
+};

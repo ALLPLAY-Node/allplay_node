@@ -21,4 +21,12 @@ export const joinClub = async (userId, clubId) => {
     });
     return join;
 };
+export const findJoinRequests = async (clubId) => {
+    const joinRequests = await prisma.joinRequest.findMany({
+        where: {
+            club_id: BigInt(clubId),
+        },
+    });
+    return joinRequests;
+};
 //# sourceMappingURL=join-request.repository.js.map

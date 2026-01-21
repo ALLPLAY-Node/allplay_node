@@ -5,6 +5,7 @@ import { getClubLeaderByClubId } from "../repositories/club-user.repository.js";
 import {
   joinClub,
   isApplied,
+  findJoinRequests,
 } from "../repositories/join-request.repository.js";
 import { Age, Level } from "@prisma/client";
 import {
@@ -84,4 +85,17 @@ export const clubJoin = async (userId: number, clubId: number) => {
   }
   const joinRequest = await joinClub(userId, clubId);
   return joinRequest;
+};
+
+export const getJoinRequests = async (userId: number, clubId: number) => {
+  const clubLeader = await getClubLeaderByClubId(BigInt(clubId));
+  if (!clubLeader) {
+    throw new ClubLeaderNotFoundError("Club leader not found", {});
+  }
+  if (clubLeader.user_id !== BigInt(userId)) {
+    throw new ClubNotAuthorizedError("not authorized to update this club", {});
+  }
+
+  const joinRequests = await findJoinRequests(clubId);
+  return joinRequests;
 };

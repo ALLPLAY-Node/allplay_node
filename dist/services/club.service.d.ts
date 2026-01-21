@@ -52,5 +52,11 @@ export declare const clubJoin: (userId: number, clubId: number) => Promise<{
     club_id: bigint;
     user_id: bigint;
 }>;
+export declare const getJoinRequests: (userId: number, clubId: number) => Promise<{
+    id: bigint;
+    created_at: Date | null;
+    club_id: bigint;
+    user_id: bigint;
+}[]>;
 export {};
 //# sourceMappingURL=club.service.d.ts.map
