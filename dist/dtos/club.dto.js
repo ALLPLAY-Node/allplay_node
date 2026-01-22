@@ -13,7 +13,7 @@ export const clubDtos = (data) => {
         description: data.description,
         joinRequirement: data.joinRequirement,
         contact: data.contact,
-        hompageUrl: data.hompageUrl,
+        homepageUrl: data.homepageUrl,
     };
 };
 export const clubListDtos = (data) => {
@@ -49,7 +49,7 @@ export const clubResponseDto = (data) => {
         id: data.id,
         clubName: data.name,
         clubPhotoURL: data.photos,
-        operator: data.members[0].user,
+        operator: data.members[0]?.user,
         region: data.region?.city + " " + data.region?.district,
         level: data.level,
         maxMembers: data.capacity,

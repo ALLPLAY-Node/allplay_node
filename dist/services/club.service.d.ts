@@ -1,20 +1,6 @@
-import { Age, Level } from "@prisma/client";
-interface clubRequest {
-    clubName: string;
-    sportType: string;
-    city: string;
-    district: string;
-    ageGroup: Age;
-    imageURL?: string[];
-    maxMembers: number;
-    activityFrequency: string;
-    level: Level;
-    description: string;
-    joinRequirement: string;
-    contact: string;
-    hompageUrl?: string;
-}
-export declare const clubAdd: (clubData: clubRequest, userId: number) => Promise<{
+import { Age } from "@prisma/client";
+import type { ClubRequest } from "../dtos/club.dto.js";
+export declare const clubAdd: (clubData: ClubRequest, userId: number) => Promise<{
     id: bigint;
     name: string | null;
     capacity: number | null;
@@ -30,7 +16,7 @@ export declare const clubAdd: (clubData: clubRequest, userId: number) => Promise
     region_id: bigint;
     sport_type_id: bigint;
 }>;
-export declare const clubUpdate: (clubData: clubRequest, userId: number, clubId: number) => Promise<{
+export declare const clubUpdate: (clubData: ClubRequest, userId: number, clubId: number) => Promise<{
     id: bigint;
     name: string | null;
     capacity: number | null;
@@ -46,47 +32,12 @@ export declare const clubUpdate: (clubData: clubRequest, userId: number, clubId:
     region_id: bigint;
     sport_type_id: bigint;
 }>;
-export declare const getClubs: (regionId: any, ageGroup: any, keyword: any, sportId: any, cursor: any) => Promise<{
-    clubs: any[];
+import type { ClubListData, ClubResponseData } from "../dtos/club.dto.js";
+export declare const getClubs: (regionId: string | null, ageGroup: Age | null, keyword: string | null, sportId: string | null, cursor: string | null) => Promise<{
+    clubs: ClubListData[];
     hasNext: boolean;
 }>;
-export declare const getClub: (clubId: number) => Promise<({
-    region: {
-        id: bigint;
-        city: string | null;
-        district: string | null;
-    };
-    members: {
-        user: {
-            name: string | null;
-            introduce: string | null;
-        };
-    }[];
-    photos: {
-        id: bigint;
-        club_id: bigint;
-        club_photo_url: string | null;
-        uploaded_at: Date | null;
-    }[];
-    _count: {
-        members: number;
-    };
-} & {
-    id: bigint;
-    name: string | null;
-    capacity: number | null;
-    activity_frequency: string | null;
-    join_requirement: string | null;
-    summary: string | null;
-    level: import("@prisma/client").$Enums.Level | null;
-    age: import("@prisma/client").$Enums.Age | null;
-    contact_number: string | null;
-    homepage_url: string | null;
-    created_at: Date | null;
-    updated_at: Date | null;
-    region_id: bigint;
-    sport_type_id: bigint;
-}) | null>;
+export declare const getClub: (clubId: number) => Promise<ClubResponseData | null>;
 export declare const clubJoin: (userId: number, clubId: number) => Promise<{
     id: bigint;
     created_at: Date | null;
@@ -101,5 +52,4 @@ export declare const getJoinRequests: (userId: number, clubId: number) => Promis
 }[]>;
 export declare const approveJoinRequest: (requestId: number, userId: number, clubId: number, status: string) => Promise<true>;
 export declare const leaveClub: (userId: number, clubId: number) => Promise<true>;
-export {};
 //# sourceMappingURL=club.service.d.ts.map

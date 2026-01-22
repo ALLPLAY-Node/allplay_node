@@ -1,24 +1,9 @@
 import { prisma } from "../db.config.js";
 import { Age, Level } from "@prisma/client";
-
-interface clubRequest {
-  clubName: string;
-  sportType: string;
-  city: string;
-  district: string;
-  ageGroup: Age;
-  imageURL?: string[];
-  maxMembers: number;
-  activityFrequency: string;
-  level: Level;
-  description: string;
-  joinRequirement: string;
-  contact: string;
-  hompageUrl?: string;
-}
+import type { ClubRequest } from "../dtos/club.dto.js";
 
 export const addClub = async (
-  clubData: clubRequest,
+  clubData: ClubRequest,
   userId: number,
   regionId: bigint,
   sportTypeId: bigint,
@@ -34,7 +19,7 @@ export const addClub = async (
         summary: clubData.description,
         level: clubData.level,
         contact_number: clubData.contact,
-        homepage_url: clubData.hompageUrl ?? null,
+        homepage_url: clubData.homepageUrl ?? null,
         region_id: regionId,
         sport_type_id: sportTypeId,
         created_at: new Date(),
@@ -55,7 +40,7 @@ export const addClub = async (
 };
 
 export const updateClub = async (
-  clubData: clubRequest,
+  clubData: ClubRequest,
   clubId: number,
   regionId: bigint,
   sportTypeId: bigint,
@@ -74,7 +59,7 @@ export const updateClub = async (
         summary: clubData.description,
         level: clubData.level,
         contact_number: clubData.contact,
-        homepage_url: clubData.hompageUrl ?? null,
+        homepage_url: clubData.homepageUrl ?? null,
         region_id: regionId,
         sport_type_id: sportTypeId,
         updated_at: new Date(),
@@ -85,20 +70,22 @@ export const updateClub = async (
   });
 };
 
+import type { ClubListData, ClubResponseData } from "../dtos/club.dto.js";
+
 export const findClubs = async (
-  regionId: any,
-  ageGroup: any,
-  keyword: any,
-  sportId: any,
-  cursor: any,
-): Promise<any[]> => {
+  regionId: string | null,
+  ageGroup: Age | null,
+  keyword: string | null,
+  sportId: string | null,
+  cursor: string | null,
+): Promise<ClubListData[]> => {
   const clubs = await prisma.clubs.findMany({
     where: {
       ...(cursor ? { id: { gt: Number(cursor) } } : {}),
-      ...(regionId ? { region_id: BigInt(regionId as string) } : {}),
-      ...(ageGroup ? { age: ageGroup as Age } : {}), // Age enum 매칭
-      ...(keyword ? { name: { contains: keyword as string } } : {}),
-      ...(sportId ? { sport_type_id: BigInt(sportId as string) } : {}),
+      ...(regionId ? { region_id: BigInt(regionId) } : {}),
+      ...(ageGroup ? { age: ageGroup } : {}), // Age enum 매칭
+      ...(keyword ? { name: { contains: keyword } } : {}),
+      ...(sportId ? { sport_type_id: BigInt(sportId) } : {}),
     },
     include: {
       region: true,
@@ -112,10 +99,12 @@ export const findClubs = async (
     },
   });
 
-  return clubs;
+  return clubs as unknown as ClubListData[];
 };
 
-export const findClubById = async (clubId: number) => {
+export const findClubById = async (
+  clubId: number,
+): Promise<ClubResponseData | null> => {
   const club = await prisma.clubs.findUnique({
     where: {
       id: BigInt(clubId),
@@ -140,5 +129,5 @@ export const findClubById = async (clubId: number) => {
     },
   });
 
-  return club;
+  return club as unknown as ClubResponseData | null;
 };

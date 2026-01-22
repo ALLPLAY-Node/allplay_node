@@ -1,6 +1,6 @@
 export declare const findRegionByCityAndDistrict: (city: string, district: string) => Promise<{
-    id: bigint;
     city: string | null;
+    id: bigint;
     district: string | null;
 } | null>;
 //# sourceMappingURL=region.repository.d.ts.map

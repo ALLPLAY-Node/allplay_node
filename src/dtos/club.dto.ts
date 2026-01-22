@@ -1,6 +1,6 @@
 import { Age, Level } from "@prisma/client";
 
-export interface clubRequest {
+export interface ClubRequest {
   clubName: string;
   sportType: string;
   city: string;
@@ -13,10 +13,10 @@ export interface clubRequest {
   description: string;
   joinRequirement: string;
   contact: string;
-  hompageUrl: string;
+  homepageUrl: string;
 }
 
-export const clubDtos = (data: clubRequest) => {
+export const clubDtos = (data: ClubRequest) => {
   return {
     clubName: data.clubName,
     sportType: data.sportType,
@@ -30,11 +30,22 @@ export const clubDtos = (data: clubRequest) => {
     description: data.description,
     joinRequirement: data.joinRequirement,
     contact: data.contact,
-    hompageUrl: data.hompageUrl,
+    homepageUrl: data.homepageUrl,
   };
 };
 
-export const clubListDtos = (data: any) => {
+export interface ClubListData {
+  id: bigint;
+  name: string | null;
+  photos: { club_photo_url: string | null }[];
+  summary: string | null;
+  join_requirement: string | null;
+  region: { city: string | null; district: string | null } | null;
+  capacity: number | null;
+  _count: { members: number };
+}
+
+export const clubListDtos = (data: ClubListData[]) => {
   const items = [];
   for (const item of data) {
     items.push({
@@ -51,7 +62,14 @@ export const clubListDtos = (data: any) => {
   return items;
 };
 
-export const joinRequestDtos = (data: any) => {
+export interface JoinRequestData {
+  id: bigint;
+  club_id: bigint;
+  user_id: bigint;
+  created_at: Date | null;
+}
+
+export const joinRequestDtos = (data: JoinRequestData[]) => {
   const items = [];
   for (const item of data) {
     items.push({
@@ -64,12 +82,31 @@ export const joinRequestDtos = (data: any) => {
   return items;
 };
 
-export const clubResponseDto = (data: any) => {
+export interface ClubResponseData {
+  id: bigint;
+  name: string | null;
+  photos: { club_photo_url: string | null }[];
+  members: {
+    user: {
+      name: string | null;
+      introduce: string | null;
+    };
+  }[];
+  region: { city: string | null; district: string | null } | null;
+  level: Level | null;
+  capacity: number | null;
+  _count: { members: number };
+  join_requirement: string | null;
+  contact_number: string | null;
+  homepage_url: string | null;
+}
+
+export const clubResponseDto = (data: ClubResponseData) => {
   return {
     id: data.id,
     clubName: data.name,
     clubPhotoURL: data.photos,
-    operator: data.members[0].user,
+    operator: data.members[0]?.user,
     region: data.region?.city + " " + data.region?.district,
     level: data.level,
     maxMembers: data.capacity,

@@ -28,24 +28,9 @@ import {
   alreadyClubLeaderError,
   notClubUserError,
 } from "../errors.js";
+import type { ClubRequest } from "../dtos/club.dto.js";
 
-interface clubRequest {
-  clubName: string;
-  sportType: string;
-  city: string;
-  district: string;
-  ageGroup: Age;
-  imageURL?: string[];
-  maxMembers: number;
-  activityFrequency: string;
-  level: Level;
-  description: string;
-  joinRequirement: string;
-  contact: string;
-  hompageUrl?: string;
-}
-
-export const clubAdd = async (clubData: clubRequest, userId: number) => {
+export const clubAdd = async (clubData: ClubRequest, userId: number) => {
   const region = await findRegionByCityAndDistrict(
     clubData.city,
     clubData.district,
@@ -65,7 +50,7 @@ export const clubAdd = async (clubData: clubRequest, userId: number) => {
 };
 
 export const clubUpdate = async (
-  clubData: clubRequest,
+  clubData: ClubRequest,
   userId: number,
   clubId: number,
 ) => {
@@ -94,13 +79,15 @@ export const clubUpdate = async (
   return updatedClub;
 };
 
+import type { ClubListData, ClubResponseData } from "../dtos/club.dto.js";
+
 export const getClubs = async (
-  regionId: any,
-  ageGroup: any,
-  keyword: any,
-  sportId: any,
-  cursor: any,
-): Promise<{ clubs: any[]; hasNext: boolean }> => {
+  regionId: string | null,
+  ageGroup: Age | null,
+  keyword: string | null,
+  sportId: string | null,
+  cursor: string | null,
+): Promise<{ clubs: ClubListData[]; hasNext: boolean }> => {
   const clubs = await findClubs(regionId, ageGroup, keyword, sportId, cursor);
   let hasNext;
   if (clubs.length > 10) {
@@ -112,7 +99,9 @@ export const getClubs = async (
   return { clubs, hasNext };
 };
 
-export const getClub = async (clubId: number) => {
+export const getClub = async (
+  clubId: number,
+): Promise<ClubResponseData | null> => {
   const club = await findClubById(clubId);
   return club;
 };

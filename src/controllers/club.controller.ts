@@ -23,11 +23,11 @@ export const handleClubAdd = async (
   next: NextFunction,
 ): Promise<void> => {
   const userId = (req as any).user.id;
-  const clubs = await clubAdd(clubDtos(req.body), userId);
+  const club = await clubAdd(clubDtos(req.body), userId);
   res.status(StatusCodes.OK).success("동호회가 성공적으로 등록되었습니다", {
-    Id: clubs.id,
-    clubName: clubs.name,
-    createdAt: clubs.created_at,
+    id: club.id,
+    clubName: club.name,
+    createdAt: club.created_at,
   });
 };
 
@@ -37,7 +37,7 @@ export const handleClubUpdate = async (
   next: NextFunction,
 ): Promise<void> => {
   const userId = (req as any).user.id;
-  const clubs = await clubUpdate(
+  const club = await clubUpdate(
     clubDtos(req.body),
     userId,
     Number(req.params.clubId),
@@ -45,9 +45,9 @@ export const handleClubUpdate = async (
   res
     .status(StatusCodes.OK)
     .success("동호회 정보가 성공적으로 수정되었습니다", {
-      Id: clubs.id,
-      clubName: clubs.name,
-      createdAt: clubs.created_at,
+      id: club.id,
+      clubName: club.name,
+      createdAt: club.created_at,
     });
 };
 
@@ -61,11 +61,18 @@ export const handleGetClubs = async (
   const keyword = req.query.keyword;
   const sportId = req.query.sportId;
   const cursor = req.query.cursor;
-  const data = await getClubs(regionId, ageGroup, keyword, sportId, cursor);
-  const len: number = data.clubs.length - 1;
+  const data = await getClubs(
+    regionId as string | null,
+    ageGroup as any,
+    keyword as string | null,
+    sportId as string | null,
+    cursor as string | null,
+  );
+  const clubs = data.clubs;
+  const len: number = clubs.length - 1;
   res.status(StatusCodes.OK).success("동호회 목록", {
-    items: clubListDtos(data.clubs),
-    cursor: len >= 0 ? data.clubs[len].id : null,
+    items: clubListDtos(clubs),
+    cursor: clubs[len]?.id ?? null,
     hasNext: data.hasNext,
   });
 };
@@ -77,6 +84,13 @@ export const handleGetClub = async (
 ): Promise<void> => {
   const clubId = Number(req.params.clubId);
   const club = await getClub(clubId);
+  if (!club) {
+    res.status(StatusCodes.NOT_FOUND).error({
+      errorCode: "CLUB_NOT_FOUND",
+      reason: "동호회를 찾을 수 없습니다",
+    });
+    return;
+  }
   res.status(StatusCodes.OK).success("동호회 정보", clubResponseDto(club));
 };
 

@@ -3,22 +3,22 @@ import { clubDtos, joinRequestDtos, clubListDtos, clubResponseDto, } from "../dt
 import { StatusCodes } from "http-status-codes";
 export const handleClubAdd = async (req, res, next) => {
     const userId = req.user.id;
-    const clubs = await clubAdd(clubDtos(req.body), userId);
+    const club = await clubAdd(clubDtos(req.body), userId);
     res.status(StatusCodes.OK).success("동호회가 성공적으로 등록되었습니다", {
-        Id: clubs.id,
-        clubName: clubs.name,
-        createdAt: clubs.created_at,
+        id: club.id,
+        clubName: club.name,
+        createdAt: club.created_at,
     });
 };
 export const handleClubUpdate = async (req, res, next) => {
     const userId = req.user.id;
-    const clubs = await clubUpdate(clubDtos(req.body), userId, Number(req.params.clubId));
+    const club = await clubUpdate(clubDtos(req.body), userId, Number(req.params.clubId));
     res
         .status(StatusCodes.OK)
         .success("동호회 정보가 성공적으로 수정되었습니다", {
-        Id: clubs.id,
-        clubName: clubs.name,
-        createdAt: clubs.created_at,
+        id: club.id,
+        clubName: club.name,
+        createdAt: club.created_at,
     });
 };
 export const handleGetClubs = async (req, res, next) => {
@@ -28,16 +28,24 @@ export const handleGetClubs = async (req, res, next) => {
     const sportId = req.query.sportId;
     const cursor = req.query.cursor;
     const data = await getClubs(regionId, ageGroup, keyword, sportId, cursor);
-    const len = data.clubs.length - 1;
+    const clubs = data.clubs;
+    const len = clubs.length - 1;
     res.status(StatusCodes.OK).success("동호회 목록", {
-        items: clubListDtos(data.clubs),
-        cursor: len >= 0 ? data.clubs[len].id : null,
+        items: clubListDtos(clubs),
+        cursor: clubs[len]?.id ?? null,
         hasNext: data.hasNext,
     });
 };
 export const handleGetClub = async (req, res, next) => {
     const clubId = Number(req.params.clubId);
     const club = await getClub(clubId);
+    if (!club) {
+        res.status(StatusCodes.NOT_FOUND).error({
+            errorCode: "CLUB_NOT_FOUND",
+            reason: "동호회를 찾을 수 없습니다",
+        });
+        return;
+    }
     res.status(StatusCodes.OK).success("동호회 정보", clubResponseDto(club));
 };
 export const handleClubJoin = async (req, res, next) => {
