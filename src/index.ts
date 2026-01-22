@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
+import presignedUrlRouter from "./routes/presigned-url.routes.js";
 
 dotenv.config();
 
@@ -19,13 +20,14 @@ app.use(express.urlencoded({ extended: false })); // 단순 객체 문자열 형
  * 공통 응답을 사용할 수 있는 헬퍼 함수 등록
  */
 app.use((req, res, next) => {
-  res.success = (success) => {
-    return res.json({ resultType: "SUCCESS", error: null, success });
+  res.success = (message: string, success: any) => {
+    return res.json({ resultType: "SUCCESS", message, error: null, success });
   };
 
   res.error = ({ errorCode = "unknown", reason = null, data = null }) => {
     return res.json({
       resultType: "FAIL",
+      message: null,
       error: { errorCode, reason, data },
       success: null,
     });
@@ -33,6 +35,8 @@ app.use((req, res, next) => {
 
   next();
 });
+
+app.use(presignedUrlRouter);
 
 /**
  * 전역 오류를 처리하기 위한 미들웨어
@@ -44,9 +48,14 @@ app.use((err: any, req: any, res: any, next: any) => {
 
   res.status(err.statusCode || 500).error({
     errorCode: err.errorCode || "unknown",
+    message: null,
     reason: err.reason || err.message || null,
     data: err.data || null,
   });
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
 });
 
 app.get("/", (req, res) => {

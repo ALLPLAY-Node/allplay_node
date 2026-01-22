@@ -7,7 +7,7 @@ interface ErrorResponse {
 declare global {
   namespace Express {
     interface Response {
-      success: (success: any) => Response;
+      success: (message: string, success: any) => Response;
       error: (error: ErrorResponse) => Response;
     }
   }
