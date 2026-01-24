@@ -39,8 +39,7 @@ model SportFacilities {
   name           String?  @db.VarChar(20)
   sport_type     BigInt
   address        String?  @db.VarChar(50)
-  photo_url      String?  @db.VarChar(255)
-  cost           Int?
+  cost           String?  @db.VarChar(20)
   introduction   String?
   information    String?
   usage_guide    String?
@@ -82,6 +81,7 @@ model JoinRequest {
   user_id    BigInt
   created_at DateTime? @default(now())
 
+  @@unique([club_id, user_id])
   @@map("join_request")
 
   club Clubs @relation(fields: [club_id], references: [id])
