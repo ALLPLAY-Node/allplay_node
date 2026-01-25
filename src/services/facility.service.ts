@@ -26,11 +26,11 @@ export const facilityAdd = async (
     facility.district,
   );
   if (!region) {
-    throw new RegionNotFoundError("Region not found", facility);
+    throw new RegionNotFoundError("Region not found", {});
   }
   const sport = await findSportByName(facility.sportType);
   if (!sport) {
-    throw new SportNotFoundError("Sport type not found", facility);
+    throw new SportNotFoundError("Sport type not found", {});
   }
   const data = await addFacility(facility, operator_id, region.id, sport.id);
   return data;
@@ -43,7 +43,7 @@ export const facilityReviewAdd = async (
 ) => {
   const data = await addReview(review, facilityId, userId);
   if (!data) {
-    throw new FailToAddReviewError("Fail to add review", review);
+    throw new FailToAddReviewError("Fail to add review", {});
   }
   return data;
 };
