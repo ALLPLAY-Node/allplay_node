@@ -105,7 +105,7 @@ export const getFacilityList = async (
         : null;
   const keyword =
     typeof req.query.keyword === "string" ? req.query.keyword : null;
-  const sportType = Number(req.query.sportId) || null;
+  const sportId = Number(req.query.sportId) || null;
 
   const facilities = await facilityListGet(
     cursor,
@@ -114,7 +114,7 @@ export const getFacilityList = async (
     isPublic,
     isFree,
     keyword,
-    sportType,
+    sportId,
   );
   res.status(StatusCodes.OK).success("", {
     data: facilities.data.map(facilityResponseDto),
