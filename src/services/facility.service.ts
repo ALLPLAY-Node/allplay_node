@@ -2,7 +2,10 @@ import type { FacilityDto, FacilityReviewDto } from "../dtos/facility.dto.js";
 import type { Review } from "../dtos/review.dto.js";
 import { findRegionByCityAndDistrict } from "../repositories/region.repository.js";
 import { findSportByName } from "../repositories/sport-type.repository.js";
-import { addFacility } from "../repositories/facility.repository.js";
+import {
+  addFacility,
+  getFacilityById,
+} from "../repositories/facility.repository.js";
 import {
   addReview,
   getFacilityReview,
@@ -11,6 +14,7 @@ import {
   RegionNotFoundError,
   SportNotFoundError,
   FailToAddReviewError,
+  FacilityNotFoundError,
 } from "../errors.js";
 
 export const facilityAdd = async (
@@ -55,4 +59,15 @@ export const facilityReviewGet = async (
     hasNext = true;
   }
   return { data, hasNext };
+};
+
+export const facilityGet = async (facilityId: bigint) => {
+  const data = await getFacilityById(facilityId);
+  if (data === null) {
+    throw new FacilityNotFoundError(
+      "Facility not found",
+      facilityId.toString(),
+    );
+  }
+  return data;
 };

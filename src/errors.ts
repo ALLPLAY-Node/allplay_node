@@ -47,3 +47,15 @@ export class FailToAddReviewError extends Error {
     this.data = data;
   }
 }
+
+export class FacilityNotFoundError extends Error {
+  errorCode = "FACILITY_NOT_FOUND";
+  statusCode = StatusCodes.NOT_FOUND;
+  reason: string;
+  data: any;
+  constructor(reason: string, data: any) {
+    super("Facility not found");
+    this.reason = reason;
+    this.data = data;
+  }
+}

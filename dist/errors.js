@@ -43,4 +43,15 @@ export class FailToAddReviewError extends Error {
         this.data = data;
     }
 }
+export class FacilityNotFoundError extends Error {
+    errorCode = "FACILITY_NOT_FOUND";
+    statusCode = StatusCodes.NOT_FOUND;
+    reason;
+    data;
+    constructor(reason, data) {
+        super("Facility not found");
+        this.reason = reason;
+        this.data = data;
+    }
+}
 //# sourceMappingURL=errors.js.map

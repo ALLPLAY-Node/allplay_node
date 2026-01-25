@@ -1,8 +1,8 @@
 import { findRegionByCityAndDistrict } from "../repositories/region.repository.js";
 import { findSportByName } from "../repositories/sport-type.repository.js";
-import { addFacility } from "../repositories/facility.repository.js";
+import { addFacility, getFacilityById, } from "../repositories/facility.repository.js";
 import { addReview, getFacilityReview, } from "../repositories/review.repository.js";
-import { RegionNotFoundError, SportNotFoundError, FailToAddReviewError, } from "../errors.js";
+import { RegionNotFoundError, SportNotFoundError, FailToAddReviewError, FacilityNotFoundError, } from "../errors.js";
 export const facilityAdd = async (facility, operator_id) => {
     const region = await findRegionByCityAndDistrict(facility.city, facility.district);
     if (!region) {
@@ -30,5 +30,12 @@ export const facilityReviewGet = async (facilityId, cursor) => {
         hasNext = true;
     }
     return { data, hasNext };
+};
+export const facilityGet = async (facilityId) => {
+    const data = await getFacilityById(facilityId);
+    if (data === null) {
+        throw new FacilityNotFoundError("Facility not found", facilityId.toString());
+    }
+    return data;
 };
 //# sourceMappingURL=facility.service.js.map

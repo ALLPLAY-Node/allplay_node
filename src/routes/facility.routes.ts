@@ -3,12 +3,15 @@ import {
   createFacility,
   createFacilityReview,
   getFacilityReview,
+  getFacility,
 } from "../controllers/facility.controller.js";
 import { isLogin } from "../middleware/auth.js";
 
 const router = Router();
 
 router.get("/facilities/:facilityId/reviews", getFacilityReview);
+
+router.get("/facilities/:facilityId", getFacility);
 
 router.post("/facilities", isLogin, createFacility);
 

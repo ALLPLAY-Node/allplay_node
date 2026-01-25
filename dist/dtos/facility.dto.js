@@ -15,6 +15,26 @@ export const facilityDto = (body) => {
         cost: body.cost,
     };
 };
+export const facilityResponseDto = (facility) => {
+    return {
+        id: facility.id.toString(),
+        sportType: facility.sport?.sport_type ?? "",
+        facilityName: facility.name ?? "",
+        isPublic: facility.is_public ?? false,
+        city: facility.region?.city ?? "",
+        district: facility.region?.district ?? "",
+        address: facility.address ?? "",
+        cost: facility.cost ?? undefined,
+        operatingHours: facility.operating_hours ?? "",
+        imageUrl: facility.photos?.map((p) => p.facility_photo_url).filter(Boolean) ??
+            [],
+        introduction: facility.introduction ?? "",
+        information: facility.information ?? "",
+        usageGuide: facility.usage_guide ?? "",
+        contact: facility.contact_number ?? "",
+        homepageUrl: facility.url ?? "",
+    };
+};
 export const facilityReviewDto = (body) => {
     return {
         text: body.text,

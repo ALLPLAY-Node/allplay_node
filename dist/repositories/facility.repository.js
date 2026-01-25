@@ -30,4 +30,18 @@ export const addFacility = async (facility, operator_id, region_id, sport_type_i
         return facilityData;
     });
 };
+export const getFacilityById = async (facilityId) => {
+    const data = await prisma.sportFacilities.findUnique({
+        where: {
+            id: facilityId,
+        },
+        include: {
+            photos: true,
+            operator: true,
+            region: true,
+            sport: true,
+        },
+    });
+    return data;
+};
 //# sourceMappingURL=facility.repository.js.map

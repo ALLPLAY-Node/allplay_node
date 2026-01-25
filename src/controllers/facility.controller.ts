@@ -3,8 +3,13 @@ import {
   facilityAdd,
   facilityReviewAdd,
   facilityReviewGet,
+  facilityGet,
 } from "../services/facility.service.js";
-import { facilityDto, facilityReviewDto } from "../dtos/facility.dto.js";
+import {
+  facilityDto,
+  facilityReviewDto,
+  facilityResponseDto,
+} from "../dtos/facility.dto.js";
 import { reviewDto } from "../dtos/review.dto.js";
 import { StatusCodes } from "http-status-codes";
 
@@ -59,4 +64,14 @@ export const getFacilityReview = async (
         ? reviews.data[reviews.data.length - 1]!.id.toString()
         : "",
   });
+};
+
+export const getFacility = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const facilityId = Number(req.params.facilityId);
+  const facility = await facilityGet(BigInt(facilityId));
+  res.status(StatusCodes.OK).success("", facilityResponseDto(facility));
 };
