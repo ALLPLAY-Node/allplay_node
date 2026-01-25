@@ -35,3 +35,15 @@ export class FacilityAlreadyExistsError extends Error {
     this.data = data;
   }
 }
+
+export class FailToAddReviewError extends Error {
+  errorCode = "FAIL_TO_ADD_REVIEW";
+  statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+  reason: string;
+  data: any;
+  constructor(reason: string, data: any) {
+    super("Fail to add review");
+    this.reason = reason;
+    this.data = data;
+  }
+}

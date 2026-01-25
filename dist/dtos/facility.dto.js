@@ -15,4 +15,10 @@ export const facilityDto = (body) => {
         cost: body.cost,
     };
 };
+export const facilityReviewDto = (body) => {
+    return {
+        text: body.text,
+        photoUrl: body.photoUrl,
+    };
+};
 //# sourceMappingURL=facility.dto.js.map

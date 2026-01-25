@@ -31,3 +31,15 @@ export const facilityDto = (body: FacilityDto) => {
     cost: body.cost,
   };
 };
+
+export interface FacilityReviewDto {
+  text: string;
+  photoUrl?: string[] | undefined;
+}
+
+export const facilityReviewDto = (body: FacilityReviewDto) => {
+  return {
+    text: body.text,
+    photoUrl: body.photoUrl,
+  };
+};
