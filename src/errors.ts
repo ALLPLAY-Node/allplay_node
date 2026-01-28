@@ -59,3 +59,15 @@ export class FacilityNotFoundError extends Error {
     this.data = data;
   }
 }
+
+export class IdInvalidError extends Error {
+  errorCode = "ID_INVALID";
+  statusCode = StatusCodes.BAD_REQUEST;
+  reason: string;
+  data: any;
+  constructor(reason: string, data: any) {
+    super("ID invalid");
+    this.reason = reason;
+    this.data = data;
+  }
+}

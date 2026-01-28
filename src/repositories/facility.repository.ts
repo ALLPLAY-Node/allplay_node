@@ -57,11 +57,11 @@ export const getFacilityById = async (facilityId: bigint) => {
 export const getFacilityList = async (
   cursor: number,
   regionId: number | null,
-  isResevable: boolean | null,
+  isReservable: boolean | null,
   isPublic: boolean | null,
   isFree: boolean | null,
   keyword: string | null,
-  sportType: number | null,
+  sportId: number | null,
 ) => {
   const where: any = {
     id: {
@@ -69,12 +69,12 @@ export const getFacilityList = async (
     },
     region_id: regionId !== null ? BigInt(regionId) : undefined,
     is_public: isPublic !== null ? isPublic : undefined,
-    sport_type: sportType !== null ? BigInt(sportType) : undefined,
+    sport_type: sportId !== null ? BigInt(sportId) : undefined,
     name: keyword ? { contains: keyword } : undefined,
     AND: [
-      isResevable === true
+      isReservable === true
         ? { apply_method: { not: null } }
-        : isResevable === false
+        : isReservable === false
           ? { apply_method: null }
           : undefined,
       isFree === true
@@ -84,15 +84,6 @@ export const getFacilityList = async (
           : undefined,
     ].filter(Boolean),
   };
-
-  console.log(
-    "Final Prisma Where:",
-    JSON.stringify(
-      where,
-      (k, v) => (typeof v === "bigint" ? v.toString() : v),
-      2,
-    ),
-  );
 
   const data = await prisma.sportFacilities.findMany({
     where,

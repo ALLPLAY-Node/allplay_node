@@ -42,6 +42,13 @@ export const facilityReviewAdd = async (
   facilityId: bigint,
   userId: bigint,
 ) => {
+  const facility = await getFacilityById(facilityId);
+  if (!facility) {
+    throw new FacilityNotFoundError(
+      "Facility not found",
+      facilityId.toString(),
+    );
+  }
   const data = await addReview(review, facilityId, userId);
   if (!data) {
     throw new FailToAddReviewError("Fail to add review", {});
@@ -76,7 +83,7 @@ export const facilityGet = async (facilityId: bigint) => {
 export const facilityListGet = async (
   cursor: number,
   regionId: number | null,
-  isResevable: boolean | null,
+  isReservable: boolean | null,
   isPublic: boolean | null,
   isFree: boolean | null,
   keyword: string | null,
@@ -85,7 +92,7 @@ export const facilityListGet = async (
   const data = await getFacilityList(
     cursor,
     regionId,
-    isResevable,
+    isReservable,
     isPublic,
     isFree,
     keyword,
