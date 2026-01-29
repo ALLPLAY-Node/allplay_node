@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
+import facilityRoutes from "./routes/facility.routes.js";
 import presignedUrlRouter from "./routes/presigned-url.routes.js";
 import clubRouter from "./routes/club.routes.js";
 dotenv.config();
@@ -34,6 +35,7 @@ app.use((req, res, next) => {
     };
     next();
 });
+app.use(facilityRoutes);
 app.use(presignedUrlRouter);
 app.use(clubRouter);
 app.get("/", (req, res) => {

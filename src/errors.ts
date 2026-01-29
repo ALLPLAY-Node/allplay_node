@@ -42,6 +42,13 @@ export class SportNotFoundError extends Error {
   }
 }
 
+export class FacilityAlreadyExistsError extends Error {
+  errorCode = "FACILITY_ALREADY_EXISTS";
+  statusCode = StatusCodes.BAD_REQUEST;
+  reason: string;
+  data: any;
+  constructor(reason: string, data: any) {
+    super("Facility already exists");
 export class ClubNotFoundError extends Error {
   errorCode = "CLUB_NOT_FOUND";
   statusCode = StatusCodes.NOT_FOUND;
@@ -78,6 +85,13 @@ export class ClubNotAuthorizedError extends Error {
   }
 }
 
+export class FailToAddReviewError extends Error {
+  errorCode = "FAIL_TO_ADD_REVIEW";
+  statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+  reason: string;
+  data: any;
+  constructor(reason: string, data: any) {
+    super("Fail to add review");
 export class AlreadyAppliedError extends Error {
   errorCode = "CLUB_ALREADY_APPLIED";
   statusCode = StatusCodes.CONFLICT;
@@ -90,12 +104,15 @@ export class AlreadyAppliedError extends Error {
   }
 }
 
+export class FacilityNotFoundError extends Error {
+  errorCode = "FACILITY_NOT_FOUND";
 export class JoinRequestNotFoundError extends Error {
   errorCode = "CLUB_JOIN_REQUEST_NOT_FOUND";
   statusCode = StatusCodes.NOT_FOUND;
   reason: string;
   data: any;
   constructor(reason: string, data: any) {
+    super("Facility not found");
     super("Join request not found");
     this.reason = reason;
     this.data = data;
@@ -114,6 +131,13 @@ export class AlreadyClubLeaderError extends Error {
   }
 }
 
+export class IdInvalidError extends Error {
+  errorCode = "ID_INVALID";
+  statusCode = StatusCodes.BAD_REQUEST;
+  reason: string;
+  data: any;
+  constructor(reason: string, data: any) {
+    super("ID invalid");
 export class InvalidOperationError extends Error {
   errorCode = "PRESIGNED_URL_INVALID_OPERATION_ERROR";
   statusCode = StatusCodes.BAD_REQUEST;

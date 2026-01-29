@@ -39,8 +39,7 @@ model SportFacilities {
   name           String?  @db.VarChar(20)
   sport_type     BigInt
   address        String?  @db.VarChar(50)
-  photo_url      String?  @db.VarChar(255)
-  cost           Int?
+  cost           String?  @db.VarChar(20)
   introduction   String?
   information    String?
   usage_guide    String?
@@ -50,6 +49,9 @@ model SportFacilities {
   created_at     DateTime? @default(now())
   updated_at     DateTime? @updatedAt
   region_id      BigInt
+  operating_hours String? @db.VarChar(15)
+  is_public      Boolean? @default(false)
+  apply_method   String? @db.VarChar(30)
 
   @@map("sport_facilities")
 
@@ -57,6 +59,7 @@ model SportFacilities {
   region   Region      @relation(fields: [region_id], references: [id])
   sport    SportType   @relation(fields: [sport_type], references: [id])
   reviews  Review[]
+  photos   facilityPhotos[]
 }
 
 model Review {
@@ -192,6 +195,17 @@ model UserClubs {
 
   club Clubs @relation(fields: [club_id], references: [id])
   user Users @relation(fields: [user_id], references: [id])
+}
+
+model facilityPhotos {
+  id             BigInt   @id @default(autoincrement())
+  facility_id    BigInt
+  facility_photo_url String?  @db.VarChar(255)
+  uploaded_at    DateTime? @default(now()) @db.DateTime(6)
+
+  @@map("facility_photos")
+
+  facility SportFacilities @relation(fields: [facility_id], references: [id])
 }
 
 model ClubPhotos {

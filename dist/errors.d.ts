@@ -15,6 +15,9 @@ export declare class SportNotFoundError extends Error {
     statusCode: StatusCodes;
     reason: string;
     data: any;
+    constructor(reason: string, data: any);
+}
+export declare class FacilityAlreadyExistsError extends Error {
     constructor(message: string, data: any);
 }
 export declare class InvalidOperationError extends Error {
@@ -56,6 +59,7 @@ export declare class JoinRequestNotFoundError extends Error {
     data: any;
     constructor(reason: string, data: any);
 }
+export declare class FailToAddReviewError extends Error {
 export declare class AlreadyClubLeaderError extends Error {
     errorCode: string;
     statusCode: StatusCodes;
@@ -63,6 +67,7 @@ export declare class AlreadyClubLeaderError extends Error {
     data: any;
     constructor(reason: string, data: any);
 }
+export declare class FacilityNotFoundError extends Error {
 export declare class NotClubUserError extends Error {
     errorCode: string;
     statusCode: StatusCodes;

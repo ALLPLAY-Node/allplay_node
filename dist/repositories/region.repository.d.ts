@@ -1,4 +1,6 @@
 export declare const findRegionByCityAndDistrict: (city: string, district: string) => Promise<{
+    id: bigint;
+    city: string | null;
     city: string | null;
     id: bigint;
     district: string | null;
