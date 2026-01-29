@@ -1,0 +1,1 @@
+{"version":3,"file":"mock-auth.middleware.js","sourceRoot":"","sources":["../../src/middlewares/mock-auth.middleware.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,MAAM,kBAAkB,GAAG,CAChC,GAAY,EACZ,GAAa,EACb,IAAkB,EAClB,EAAE;IACF,2CAA2C;IAC3C,GAAG,CAAC,IAAI,GAAG;QACT,EAAE,EAAE,CAAC;KACN,CAAC;IACF,IAAI,EAAE,CAAC;AACT,CAAC,CAAC"}

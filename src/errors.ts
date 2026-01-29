@@ -1,5 +1,14 @@
 import { StatusCodes } from "http-status-codes";
 
+export class InvalidFileNameError extends Error {
+  errorCode = "PRESIGNED_URL_FILE_NAME_ERROR";
+  statusCode = StatusCodes.BAD_REQUEST;
+  reason: string;
+  data: any;
+  constructor(message: string, data: any) {
+    super(message);
+    this.name = "InvalidFileNameError";
+    this.reason = message;
 export class RegionNotFoundError extends Error {
   errorCode = "CLUB_REGION_NOT_FOUND";
   statusCode = StatusCodes.NOT_FOUND;
@@ -12,6 +21,15 @@ export class RegionNotFoundError extends Error {
   }
 }
 
+export class MissingRequiredParametersError extends Error {
+  errorCode = "PRESIGNED_URL_MISSING_REQUIRED_PARAMETERS_ERROR";
+  statusCode = StatusCodes.BAD_REQUEST;
+  reason: string;
+  data: any;
+  constructor(message: string, data: any) {
+    super(message);
+    this.name = "MissingRequiredParametersError";
+    this.reason = message;
 export class SportNotFoundError extends Error {
   errorCode = "CLUB_SPORT_NOT_FOUND";
   statusCode = StatusCodes.NOT_FOUND;
@@ -31,6 +49,37 @@ export class FacilityAlreadyExistsError extends Error {
   data: any;
   constructor(reason: string, data: any) {
     super("Facility already exists");
+export class ClubNotFoundError extends Error {
+  errorCode = "CLUB_NOT_FOUND";
+  statusCode = StatusCodes.NOT_FOUND;
+  reason: string;
+  data: any;
+  constructor(reason: string, data: any) {
+    super("Club not found");
+    this.reason = reason;
+    this.data = data;
+  }
+}
+
+export class ClubLeaderNotFoundError extends Error {
+  errorCode = "CLUB_LEADER_NOT_FOUND";
+  statusCode = StatusCodes.NOT_FOUND;
+  reason: string;
+  data: any;
+  constructor(reason: string, data: any) {
+    super("Club leader not found");
+    this.reason = reason;
+    this.data = data;
+  }
+}
+
+export class ClubNotAuthorizedError extends Error {
+  errorCode = "CLUB_NOT_AUTHORIZED";
+  statusCode = StatusCodes.FORBIDDEN;
+  reason: string;
+  data: any;
+  constructor(reason: string, data: any) {
+    super("Club not authorized");
     this.reason = reason;
     this.data = data;
   }
@@ -43,6 +92,13 @@ export class FailToAddReviewError extends Error {
   data: any;
   constructor(reason: string, data: any) {
     super("Fail to add review");
+export class AlreadyAppliedError extends Error {
+  errorCode = "CLUB_ALREADY_APPLIED";
+  statusCode = StatusCodes.CONFLICT;
+  reason: string;
+  data: any;
+  constructor(reason: string, data: any) {
+    super("Already applied");
     this.reason = reason;
     this.data = data;
   }
@@ -50,11 +106,26 @@ export class FailToAddReviewError extends Error {
 
 export class FacilityNotFoundError extends Error {
   errorCode = "FACILITY_NOT_FOUND";
+export class JoinRequestNotFoundError extends Error {
+  errorCode = "CLUB_JOIN_REQUEST_NOT_FOUND";
   statusCode = StatusCodes.NOT_FOUND;
   reason: string;
   data: any;
   constructor(reason: string, data: any) {
     super("Facility not found");
+    super("Join request not found");
+    this.reason = reason;
+    this.data = data;
+  }
+}
+
+export class AlreadyClubLeaderError extends Error {
+  errorCode = "CLUB_ALREADY_LEADER";
+  statusCode = StatusCodes.CONFLICT;
+  reason: string;
+  data: any;
+  constructor(reason: string, data: any) {
+    super("Already club leader");
     this.reason = reason;
     this.data = data;
   }
@@ -67,6 +138,34 @@ export class IdInvalidError extends Error {
   data: any;
   constructor(reason: string, data: any) {
     super("ID invalid");
+export class InvalidOperationError extends Error {
+  errorCode = "PRESIGNED_URL_INVALID_OPERATION_ERROR";
+  statusCode = StatusCodes.BAD_REQUEST;
+  reason: string;
+  data: any;
+  constructor(message: string, data: any) {
+    super(message);
+    this.name = "InvalidOperationError";
+    this.reason = message;
+export class NotClubUserError extends Error {
+  errorCode = "CLUB_NOT_USER";
+  statusCode = StatusCodes.BAD_REQUEST;
+  reason: string;
+  data: any;
+  constructor(reason: string, data: any) {
+    super("Not club user");
+    this.reason = reason;
+    this.data = data;
+  }
+}
+
+export class ClubLeaderCannotLeaveError extends Error {
+  errorCode = "CLUB_LEADER_CANNOT_LEAVE";
+  statusCode = StatusCodes.FORBIDDEN;
+  reason: string;
+  data: any;
+  constructor(reason: string, data: any) {
+    super("Club leader cannot leave");
     this.reason = reason;
     this.data = data;
   }
