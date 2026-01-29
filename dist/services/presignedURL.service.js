@@ -11,7 +11,6 @@ const s3Client = new S3Client({
         secretAccessKey: process.env.AWS_SECRET_KEY,
     },
 });
-const BUCKET_NAME = "allplay-image-dev"; // 버킷 고정
 const isNonEmptyString = (value) => typeof value === "string" && value.trim().length > 0;
 export const getPresignedURL = async (domain, // 폴더 이름
 operation, fileName, fileType) => {
@@ -35,14 +34,14 @@ operation, fileName, fileType) => {
     let command;
     if (operation === "PUT") {
         command = new PutObjectCommand({
-            Bucket: BUCKET_NAME,
+            Bucket: process.env.BUCKET_NAME,
             Key: key,
             ContentType: fileType,
         });
     }
     else if (operation === "GET") {
         command = new GetObjectCommand({
-            Bucket: BUCKET_NAME,
+            Bucket: process.env.BUCKET_NAME,
             Key: key,
         });
     }

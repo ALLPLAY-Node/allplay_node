@@ -6,10 +6,6 @@ import facilityRoutes from "./routes/facility.routes.js";
 import presignedUrlRouter from "./routes/presigned-url.routes.js";
 import clubRouter from "./routes/club.routes.js";
 dotenv.config();
-// BigInt를 JSON으로 serialize할 수 있도록 설정
-BigInt.prototype.toJSON = function () {
-    return this.toString();
-};
 const app = express();
 const port = process.env.PORT;
 const prisma = new PrismaClient();

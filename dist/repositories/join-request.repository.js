@@ -30,22 +30,17 @@ export const findJoinRequests = async (clubId) => {
     return joinRequests;
 };
 const deleteJoinRequest = async (requestId) => {
-    try {
-        const joinRequest = await prisma.joinRequest.delete({
-            where: {
-                id: BigInt(requestId),
-            },
-        });
-        if (joinRequest) {
-            return true;
-        }
-        return false;
+    const joinRequest = await prisma.joinRequest.delete({
+        where: {
+            id: BigInt(requestId),
+        },
+    });
+    if (joinRequest) {
+        return true;
     }
-    catch (error) {
-        return false;
-    }
+    return false;
 };
-export const joinRequestApprove = async (requestId, clubId, userId, status) => {
+export const joinRequestApprove = async (requestId, clubId, status) => {
     const joinRequest = await prisma.joinRequest.findUnique({
         where: {
             id: BigInt(requestId),
@@ -59,7 +54,7 @@ export const joinRequestApprove = async (requestId, clubId, userId, status) => {
         return false;
     }
     if (status === "APPROVED") {
-        const join = await prisma.userClubs.create({
+        await prisma.userClubs.create({
             data: {
                 user_id: joinRequest.user_id,
                 club_id: BigInt(clubId),

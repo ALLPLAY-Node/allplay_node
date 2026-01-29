@@ -9,6 +9,9 @@ export class InvalidFileNameError extends Error {
     super(message);
     this.name = "InvalidFileNameError";
     this.reason = message;
+  }
+}
+
 export class RegionNotFoundError extends Error {
   errorCode = "CLUB_REGION_NOT_FOUND";
   statusCode = StatusCodes.NOT_FOUND;
@@ -30,6 +33,9 @@ export class MissingRequiredParametersError extends Error {
     super(message);
     this.name = "MissingRequiredParametersError";
     this.reason = message;
+  }
+}
+
 export class SportNotFoundError extends Error {
   errorCode = "CLUB_SPORT_NOT_FOUND";
   statusCode = StatusCodes.NOT_FOUND;
@@ -49,6 +55,11 @@ export class FacilityAlreadyExistsError extends Error {
   data: any;
   constructor(reason: string, data: any) {
     super("Facility already exists");
+    this.reason = reason;
+    this.data = data;
+  }
+}
+
 export class ClubNotFoundError extends Error {
   errorCode = "CLUB_NOT_FOUND";
   statusCode = StatusCodes.NOT_FOUND;
@@ -92,6 +103,11 @@ export class FailToAddReviewError extends Error {
   data: any;
   constructor(reason: string, data: any) {
     super("Fail to add review");
+    this.reason = reason;
+    this.data = data;
+  }
+}
+
 export class AlreadyAppliedError extends Error {
   errorCode = "CLUB_ALREADY_APPLIED";
   statusCode = StatusCodes.CONFLICT;
@@ -106,13 +122,22 @@ export class AlreadyAppliedError extends Error {
 
 export class FacilityNotFoundError extends Error {
   errorCode = "FACILITY_NOT_FOUND";
+  statusCode = StatusCodes.NOT_FOUND;
+  reason: string;
+  data: any;
+  constructor(reason: string, data: any) {
+    super("Facility not found");
+    this.reason = reason;
+    this.data = data;
+  }
+}
+
 export class JoinRequestNotFoundError extends Error {
   errorCode = "CLUB_JOIN_REQUEST_NOT_FOUND";
   statusCode = StatusCodes.NOT_FOUND;
   reason: string;
   data: any;
   constructor(reason: string, data: any) {
-    super("Facility not found");
     super("Join request not found");
     this.reason = reason;
     this.data = data;
@@ -138,6 +163,11 @@ export class IdInvalidError extends Error {
   data: any;
   constructor(reason: string, data: any) {
     super("ID invalid");
+    this.reason = reason;
+    this.data = data;
+  }
+}
+
 export class InvalidOperationError extends Error {
   errorCode = "PRESIGNED_URL_INVALID_OPERATION_ERROR";
   statusCode = StatusCodes.BAD_REQUEST;
@@ -147,6 +177,10 @@ export class InvalidOperationError extends Error {
     super(message);
     this.name = "InvalidOperationError";
     this.reason = message;
+    this.data = data;
+  }
+}
+
 export class NotClubUserError extends Error {
   errorCode = "CLUB_NOT_USER";
   statusCode = StatusCodes.BAD_REQUEST;

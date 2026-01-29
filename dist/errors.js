@@ -8,6 +8,16 @@ export class InvalidFileNameError extends Error {
         super(message);
         this.name = "InvalidFileNameError";
         this.reason = message;
+    }
+}
+export class RegionNotFoundError extends Error {
+    errorCode = "CLUB_REGION_NOT_FOUND";
+    statusCode = StatusCodes.NOT_FOUND;
+    reason;
+    data;
+    constructor(reason, data) {
+        super("Region not found");
+        this.reason = reason;
         this.data = data;
     }
 }
@@ -20,27 +30,6 @@ export class MissingRequiredParametersError extends Error {
         super(message);
         this.name = "MissingRequiredParametersError";
         this.reason = message;
-        this.data = data;
-    }
-}
-export class InvalidOperationError extends Error {
-    errorCode = "PRESIGNED_URL_INVALID_OPERATION_ERROR";
-    statusCode = StatusCodes.BAD_REQUEST;
-    reason;
-    data;
-    constructor(message, data) {
-        super(message);
-        this.name = "InvalidOperationError";
-        this.reason = message;
-export class RegionNotFoundError extends Error {
-    errorCode = "CLUB_REGION_NOT_FOUND";
-    statusCode = StatusCodes.NOT_FOUND;
-    reason;
-    data;
-    constructor(reason, data) {
-        super("Region not found");
-        this.reason = reason;
-        this.data = data;
     }
 }
 export class SportNotFoundError extends Error {
@@ -61,6 +50,10 @@ export class FacilityAlreadyExistsError extends Error {
     data;
     constructor(reason, data) {
         super("Facility already exists");
+        this.reason = reason;
+        this.data = data;
+    }
+}
 export class ClubNotFoundError extends Error {
     errorCode = "CLUB_NOT_FOUND";
     statusCode = StatusCodes.NOT_FOUND;
@@ -72,13 +65,6 @@ export class ClubNotFoundError extends Error {
         this.data = data;
     }
 }
-export class FailToAddReviewError extends Error {
-    errorCode = "FAIL_TO_ADD_REVIEW";
-    statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
-    reason;
-    data;
-    constructor(reason, data) {
-        super("Fail to add review");
 export class ClubLeaderNotFoundError extends Error {
     errorCode = "CLUB_LEADER_NOT_FOUND";
     statusCode = StatusCodes.NOT_FOUND;
@@ -90,8 +76,6 @@ export class ClubLeaderNotFoundError extends Error {
         this.data = data;
     }
 }
-export class FacilityNotFoundError extends Error {
-    errorCode = "FACILITY_NOT_FOUND";
 export class ClubNotAuthorizedError extends Error {
     errorCode = "CLUB_NOT_AUTHORIZED";
     statusCode = StatusCodes.FORBIDDEN;
@@ -99,6 +83,17 @@ export class ClubNotAuthorizedError extends Error {
     data;
     constructor(reason, data) {
         super("Club not authorized");
+        this.reason = reason;
+        this.data = data;
+    }
+}
+export class FailToAddReviewError extends Error {
+    errorCode = "FAIL_TO_ADD_REVIEW";
+    statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+    reason;
+    data;
+    constructor(reason, data) {
+        super("Fail to add review");
         this.reason = reason;
         this.data = data;
     }
@@ -114,13 +109,23 @@ export class AlreadyAppliedError extends Error {
         this.data = data;
     }
 }
+export class FacilityNotFoundError extends Error {
+    errorCode = "FACILITY_NOT_FOUND";
+    statusCode = StatusCodes.NOT_FOUND;
+    reason;
+    data;
+    constructor(reason, data) {
+        super("Facility not found");
+        this.reason = reason;
+        this.data = data;
+    }
+}
 export class JoinRequestNotFoundError extends Error {
     errorCode = "CLUB_JOIN_REQUEST_NOT_FOUND";
     statusCode = StatusCodes.NOT_FOUND;
     reason;
     data;
     constructor(reason, data) {
-        super("Facility not found");
         super("Join request not found");
         this.reason = reason;
         this.data = data;
@@ -137,6 +142,29 @@ export class AlreadyClubLeaderError extends Error {
         this.data = data;
     }
 }
+export class IdInvalidError extends Error {
+    errorCode = "ID_INVALID";
+    statusCode = StatusCodes.BAD_REQUEST;
+    reason;
+    data;
+    constructor(reason, data) {
+        super("ID invalid");
+        this.reason = reason;
+        this.data = data;
+    }
+}
+export class InvalidOperationError extends Error {
+    errorCode = "PRESIGNED_URL_INVALID_OPERATION_ERROR";
+    statusCode = StatusCodes.BAD_REQUEST;
+    reason;
+    data;
+    constructor(message, data) {
+        super(message);
+        this.name = "InvalidOperationError";
+        this.reason = message;
+        this.data = data;
+    }
+}
 export class NotClubUserError extends Error {
     errorCode = "CLUB_NOT_USER";
     statusCode = StatusCodes.BAD_REQUEST;
@@ -144,6 +172,17 @@ export class NotClubUserError extends Error {
     data;
     constructor(reason, data) {
         super("Not club user");
+        this.reason = reason;
+        this.data = data;
+    }
+}
+export class ClubLeaderCannotLeaveError extends Error {
+    errorCode = "CLUB_LEADER_CANNOT_LEAVE";
+    statusCode = StatusCodes.FORBIDDEN;
+    reason;
+    data;
+    constructor(reason, data) {
+        super("Club leader cannot leave");
         this.reason = reason;
         this.data = data;
     }

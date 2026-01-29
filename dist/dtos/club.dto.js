@@ -1,21 +1,4 @@
 import { Age, Level } from "@prisma/client";
-export const clubDtos = (data) => {
-    return {
-        clubName: data.clubName,
-        sportType: data.sportType,
-        city: data.city,
-        district: data.district,
-        ageGroup: data.ageGroup,
-        imageURL: data.imageURL,
-        maxMembers: data.maxMembers,
-        activityFrequency: data.activityFrequency,
-        level: data.level,
-        description: data.description,
-        joinRequirement: data.joinRequirement,
-        contact: data.contact,
-        homepageUrl: data.homepageUrl,
-    };
-};
 export const clubListDtos = (data) => {
     const items = [];
     for (const item of data) {
@@ -56,7 +39,7 @@ export const clubResponseDto = (data) => {
         currentMembers: data._count.members,
         joinRequirement: data.join_requirement,
         contact: data.contact_number,
-        hompageURL: data.homepage_url,
+        homepageURL: data.homepage_url,
     };
 };
 //# sourceMappingURL=club.dto.js.map

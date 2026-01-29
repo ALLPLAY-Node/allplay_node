@@ -16,6 +16,10 @@ export const facilityAdd = async (facility, operator_id) => {
     return data;
 };
 export const facilityReviewAdd = async (review, facilityId, userId) => {
+    const facility = await getFacilityById(facilityId);
+    if (!facility) {
+        throw new FacilityNotFoundError("Facility not found", facilityId.toString());
+    }
     const data = await addReview(review, facilityId, userId);
     if (!data) {
         throw new FailToAddReviewError("Fail to add review", {});
@@ -38,8 +42,8 @@ export const facilityGet = async (facilityId) => {
     }
     return data;
 };
-export const facilityListGet = async (cursor, regionId, isResevable, isPublic, isFree, keyword, sportId) => {
-    const data = await getFacilityList(cursor, regionId, isResevable, isPublic, isFree, keyword, sportId);
+export const facilityListGet = async (cursor, regionId, isReservable, isPublic, isFree, keyword, sportId) => {
+    const data = await getFacilityList(cursor, regionId, isReservable, isPublic, isFree, keyword, sportId);
     let hasNext = false;
     if (data.length > 10) {
         data.pop();

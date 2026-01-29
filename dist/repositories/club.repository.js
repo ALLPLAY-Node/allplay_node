@@ -1,5 +1,5 @@
 import { prisma } from "../db.config.js";
-import { Age, Level } from "@prisma/client";
+import { Age } from "@prisma/client";
 export const addClub = async (clubData, userId, regionId, sportTypeId) => {
     return await prisma.$transaction(async (tx) => {
         const club = await tx.clubs.create({

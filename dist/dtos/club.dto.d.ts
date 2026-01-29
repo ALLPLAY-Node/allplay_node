@@ -14,21 +14,6 @@ export interface ClubRequest {
     contact: string;
     homepageUrl: string;
 }
-export declare const clubDtos: (data: ClubRequest) => {
-    clubName: string;
-    sportType: string;
-    city: string;
-    district: string;
-    ageGroup: import("@prisma/client").$Enums.Age;
-    imageURL: string[];
-    maxMembers: number;
-    activityFrequency: string;
-    level: import("@prisma/client").$Enums.Level;
-    description: string;
-    joinRequirement: string;
-    contact: string;
-    homepageUrl: string;
-};
 export interface ClubListData {
     id: bigint;
     name: string | null;
@@ -111,6 +96,6 @@ export declare const clubResponseDto: (data: ClubResponseData) => {
     currentMembers: number;
     joinRequirement: string | null;
     contact: string | null;
-    hompageURL: string | null;
+    homepageURL: string | null;
 };
 //# sourceMappingURL=club.dto.d.ts.map

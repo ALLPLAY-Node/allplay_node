@@ -4,8 +4,8 @@ import { findSportByName } from "../repositories/sport-type.repository.js";
 import { getClubLeaderByClubId, clubLeave, } from "../repositories/club-user.repository.js";
 import { joinClub, isApplied, findJoinRequests, joinRequestApprove, } from "../repositories/join-request.repository.js";
 import { addClubPhotos } from "../repositories/clubPhoto.repository.js";
-import { Age, Level } from "@prisma/client";
-import { RegionNotFoundError, SportNotFoundError, ClubLeaderNotFoundError, ClubNotAuthorizedError, AlreadyAppliedError, JoinRequestNotFoundError, AlreadyClubLeaderError, NotClubUserError, } from "../errors.js";
+import { Age } from "@prisma/client";
+import { RegionNotFoundError, SportNotFoundError, ClubLeaderNotFoundError, ClubNotAuthorizedError, AlreadyAppliedError, JoinRequestNotFoundError, AlreadyClubLeaderError, NotClubUserError, ClubLeaderCannotLeaveError, } from "../errors.js";
 export const clubAdd = async (clubData, userId) => {
     const region = await findRegionByCityAndDistrict(clubData.city, clubData.district);
     if (!region) {
@@ -77,11 +77,16 @@ export const getJoinRequests = async (userId, clubId) => {
         throw new ClubLeaderNotFoundError("Club leader not found", {});
     }
     if (clubLeader.user_id !== BigInt(userId)) {
-        throw new ClubNotAuthorizedError("not authorized to update this club", {});
+        throw new ClubNotAuthorizedError("not authorized to manage join requests", {});
     }
     const joinRequests = await findJoinRequests(clubId);
     return joinRequests;
 };
+var Status;
+(function (Status) {
+    Status["APPROVED"] = "APPROVED";
+    Status["REJECTED"] = "REJECTED";
+})(Status || (Status = {}));
 export const approveJoinRequest = async (requestId, userId, clubId, status) => {
     const clubLeader = await getClubLeaderByClubId(BigInt(clubId));
     if (!clubLeader) {
@@ -90,7 +95,7 @@ export const approveJoinRequest = async (requestId, userId, clubId, status) => {
     if (clubLeader.user_id !== BigInt(userId)) {
         throw new ClubNotAuthorizedError("not authorized to update this club", {});
     }
-    const data = await joinRequestApprove(requestId, clubId, userId, status);
+    const data = await joinRequestApprove(requestId, clubId, status);
     if (!data) {
         throw new JoinRequestNotFoundError("Join request not found", {});
     }
@@ -102,7 +107,7 @@ export const leaveClub = async (userId, clubId) => {
         throw new ClubLeaderNotFoundError("Club leader not found", {});
     }
     if (clubLeader.user_id === BigInt(userId)) {
-        throw new Error("club leader cannot leave club");
+        throw new ClubLeaderCannotLeaveError("club leader cannot leave club", {});
     }
     const data = await clubLeave(BigInt(userId), BigInt(clubId));
     if (!data) {

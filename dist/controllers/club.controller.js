@@ -1,10 +1,10 @@
 import { clubAdd, clubUpdate, clubJoin, getJoinRequests, approveJoinRequest, leaveClub, getClubs, getClub, } from "../services/club.service.js";
-import { clubDtos, joinRequestDtos, clubListDtos, clubResponseDto, } from "../dtos/club.dto.js";
+import { joinRequestDtos, clubListDtos, clubResponseDto, } from "../dtos/club.dto.js";
 import { ClubNotFoundError } from "../errors.js";
 import { StatusCodes } from "http-status-codes";
 export const handleClubAdd = async (req, res, next) => {
     const userId = req.user.id;
-    const club = await clubAdd(clubDtos(req.body), userId);
+    const club = await clubAdd(req.body, userId);
     res.status(StatusCodes.OK).success("동호회가 성공적으로 등록되었습니다", {
         id: club.id,
         clubName: club.name,
@@ -13,7 +13,7 @@ export const handleClubAdd = async (req, res, next) => {
 };
 export const handleClubUpdate = async (req, res, next) => {
     const userId = req.user.id;
-    const club = await clubUpdate(clubDtos(req.body), userId, Number(req.params.clubId));
+    const club = await clubUpdate(req.body, userId, Number(req.params.clubId));
     res
         .status(StatusCodes.OK)
         .success("동호회 정보가 성공적으로 수정되었습니다", {
@@ -73,7 +73,7 @@ export const handleApproveJoinRequest = async (req, res, next) => {
 export const handleLeaveClub = async (req, res, next) => {
     const userId = req.user.id;
     const clubId = Number(req.params.clubId);
-    const data = await leaveClub(userId, clubId);
+    await leaveClub(userId, clubId);
     res.status(StatusCodes.OK).success("탈퇴 완료", {});
 };
 //# sourceMappingURL=club.controller.js.map

@@ -73,7 +73,7 @@ export declare const getFacilityById: (facilityId: bigint) => Promise<({
     operator_id: bigint;
     region_id: bigint;
 }) | null>;
-export declare const getFacilityList: (cursor: number, regionId: number | null, isResevable: boolean | null, isPublic: boolean | null, isFree: boolean | null, keyword: string | null, sportType: number | null) => Promise<({
+export declare const getFacilityList: (cursor: number, regionId: number | null, isReservable: boolean | null, isPublic: boolean | null, isFree: boolean | null, keyword: string | null, sportId: number | null) => Promise<({
     region: {
         id: bigint;
         city: string | null;
