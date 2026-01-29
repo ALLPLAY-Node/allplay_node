@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import presignedUrlRouter from "./routes/presigned-url.routes.js";
+import clubRouter from "./routes/club.routes.js";
 
 dotenv.config();
 
@@ -37,6 +38,11 @@ app.use((req, res, next) => {
 });
 
 app.use(presignedUrlRouter);
+app.use(clubRouter);
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
 /**
  * 전역 오류를 처리하기 위한 미들웨어

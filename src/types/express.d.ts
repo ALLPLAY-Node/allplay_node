@@ -10,6 +10,12 @@ declare global {
       success: (message: string, success: any) => Response;
       error: (error: ErrorResponse) => Response;
     }
+
+    interface Request {
+      user?: {
+        id: number;
+      };
+    } //임시
   }
 }
 

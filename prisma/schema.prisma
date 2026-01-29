@@ -80,6 +80,7 @@ model JoinRequest {
   user_id    BigInt
   created_at DateTime? @default(now())
 
+  @@unique([club_id, user_id])
   @@map("join_request")
 
   club Clubs @relation(fields: [club_id], references: [id])

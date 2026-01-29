@@ -1,6 +1,0 @@
-{
-  "watch": ["src"],
-  "ignore": ["src/generated/**"],
-  "ext": "ts,json,prisma",
-  "exec": "prisma generate && tsx src/index.ts"
-}
