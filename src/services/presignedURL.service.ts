@@ -19,7 +19,7 @@ if (!process.env.AWS_ACCESS_KEY || !process.env.AWS_SECRET_KEY) {
 type Operation = "PUT" | "GET";
 
 export class PresignedURLService {
-  s3Client = new S3Client({
+  private s3Client = new S3Client({
     region: "ap-northeast-2",
     credentials: {
       accessKeyId: process.env.AWS_ACCESS_KEY!,
@@ -63,7 +63,7 @@ export class PresignedURLService {
 
     const key = `${domain}/${fileName}`; // 버킷 안 폴더 포함 Key
 
-    let command;
+    let command: PutObjectCommand | GetObjectCommand;
     if (operation === "PUT") {
       command = new PutObjectCommand({
         Bucket: process.env.BUCKET_NAME,
