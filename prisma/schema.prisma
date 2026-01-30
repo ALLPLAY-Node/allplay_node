@@ -1,0 +1,203 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                BigInt    @id @default(autoincrement())
+  region_id         BigInt?
+  name              String    @db.VarChar(20)
+  email             String    @unique @db.VarChar(50)
+  password          String?   @db.VarChar(100)
+  phone_number      String?   @db.VarChar(15)
+  birth             DateTime? @db.Date
+  gender            Gender?   
+  profile_photo_url String?   @db.VarChar(255)
+  introduce         String?   @db.Text
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+  status            Boolean   @default(true)
+  inactive_date     DateTime?
+  privacy_agreement Boolean   @default(false)
+
+  region     Region?    @relation(fields: [region_id], references: [id])
+  user_clubs UserClub[]
+  reviews    Review[]
+  notices    Notice[]   @relation("NoticeWriter")
+
+  @@map("users")
+}
+
+model Region {
+  id       BigInt @id @default(autoincrement())
+  city     String @db.VarChar(10)
+  district String @db.VarChar(10)
+
+  users      User[]
+  clubs      Club[]
+  facilities SportFacility[]
+
+  @@map("region")
+}
+
+model Club {
+  id                 BigInt   @id @default(autoincrement())
+  region_id          BigInt
+  sport_type_id      BigInt
+  name               String   @db.VarChar(20)
+  capacity           Int
+  activity_frequency String?  @db.VarChar(20)
+  join_requirement   String?  @db.VarChar(20)
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+  level              String?  @db.VarChar(10)
+  age                String?  @db.VarChar(10)
+  summary            String?  @db.VarChar(50)
+  contact            String?  @db.VarChar(15)
+  url                String?  @db.VarChar(255)
+
+  region     Region      @relation(fields: [region_id], references: [id])
+  sport_type SportType   @relation(fields: [sport_type_id], references: [id])
+  user_clubs UserClub[]
+  photos     ClubPhoto[]
+  notices    Notice[]
+  requests   JoinRequest[]
+
+  @@map("clubs")
+}
+
+model UserClub {
+  id         BigInt   @id @default(autoincrement())
+  club_id    BigInt
+  user_id    BigInt
+  is_leader  Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  club Club @relation(fields: [club_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("user_clubs")
+}
+
+model JoinRequest {
+  id         BigInt   @id @default(autoincrement())
+  club_id    BigInt
+  user_id    BigInt
+  created_at DateTime @default(now())
+
+  club Club @relation(fields: [club_id], references: [id])
+
+  @@map("join_request")
+}
+
+model SportType {
+  id         BigInt          @id @default(autoincrement())
+  sport_type String          @db.VarChar(20)
+  clubs      Club[]
+  facilities SportFacility[]
+
+  @@map("sport_type")
+}
+
+model SportFacility {
+  id            BigInt   @id @default(autoincrement())
+  operator_id   BigInt?
+  sport_type_id BigInt
+  region_id     BigInt
+  name          String   @db.VarChar(50)
+  address       String   @db.VarChar(100)
+  photo_url     String?  @db.VarChar(255)
+  cost          Int?
+  introduction  String?  @db.Text
+  usage_guide   String?  @db.Text
+  contact       String?  @db.VarChar(15)
+  url           String?  @db.VarChar(255)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  sport_type SportType       @relation(fields: [sport_type_id], references: [id])
+  region     Region          @relation(fields: [region_id], references: [id])
+  reviews    Review[]
+  photos     FacilityPhoto[]
+
+  @@map("sport_facilities")
+}
+
+model Review {
+  id          BigInt   @id @default(autoincrement())
+  user_id     BigInt
+  facility_id BigInt
+  text        String   @db.Text
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  user     User             @relation(fields: [user_id], references: [id])
+  facility SportFacility    @relation(fields: [facility_id], references: [id])
+  photos   ReviewPhoto[]
+
+  @@map("review")
+}
+
+model ReviewPhoto {
+  id          BigInt   @id @default(autoincrement())
+  review_id   BigInt
+  photo_url   String   @db.VarChar(255)
+  uploaded_at DateTime @default(now())
+
+  review Review @relation(fields: [review_id], references: [id])
+
+  @@map("review_photos")
+}
+
+model ClubPhoto {
+  id          BigInt   @id @default(autoincrement())
+  club_id     BigInt
+  photo_url   String   @db.VarChar(255)
+  uploaded_at DateTime @default(now())
+
+  club Club @relation(fields: [club_id], references: [id])
+
+  @@map("club_photo")
+}
+
+model FacilityPhoto {
+  id          BigInt   @id @default(autoincrement())
+  facility_id BigInt
+  photo_url   String   @db.VarChar(255)
+  uploaded_at DateTime @default(now())
+
+  facility SportFacility @relation(fields: [facility_id], references: [id])
+
+  @@map("facility_photo")
+}
+
+model Notice {
+  id         BigInt   @id @default(autoincrement())
+  club_id    BigInt
+  user_id    BigInt
+  title      String   @db.VarChar(30)
+  text       String   @db.Text
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  club Club @relation(fields: [club_id], references: [id])
+  user User @relation("NoticeWriter", fields: [user_id], references: [id])
+
+  @@map("notice")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  NONE
+}
+
+enum MissionStatus {
+  CHALLENGING
+  COMPLETE
+}
