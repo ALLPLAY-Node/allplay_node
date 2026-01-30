@@ -1,7 +1,7 @@
 import type { FacilityDto, FacilityReviewDto } from "../dtos/facility.dto.js";
 import type { Review } from "../dtos/review.dto.js";
-import { findRegionByCityAndDistrict } from "../repositories/region.repository.js";
-import { findSportByName } from "../repositories/sport-type.repository.js";
+import { RegionRepository } from "../repositories/region.repository.js";
+import { SportTypeRepository } from "../repositories/sport-type.repository.js";
 import {
   addFacility,
   getFacilityById,
@@ -18,18 +18,21 @@ import {
   FacilityNotFoundError,
 } from "../errors.js";
 
+const regionRepository = new RegionRepository();
+const sportTypeRepository = new SportTypeRepository();
+
 export const facilityAdd = async (
   facility: FacilityDto,
   operator_id: bigint,
 ) => {
-  const region = await findRegionByCityAndDistrict(
+  const region = await regionRepository.findRegionByCityAndDistrict(
     facility.city,
     facility.district,
   );
   if (!region) {
     throw new RegionNotFoundError("Region not found", {});
   }
-  const sport = await findSportByName(facility.sportType);
+  const sport = await sportTypeRepository.findSportByName(facility.sportType);
   if (!sport) {
     throw new SportNotFoundError("Sport type not found", {});
   }
