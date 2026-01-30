@@ -1,23 +1,26 @@
 import { Router } from "express";
-import {
-  createFacility,
-  createFacilityReview,
-  getFacilityReview,
-  getFacility,
-  getFacilityList,
-} from "../controllers/facility.controller.js";
+import { FacilityController } from "../controllers/facility.controller.js";
 import { isLogin } from "../middleware/auth.js";
 
 const router = Router();
 
-router.get("/facilities", getFacilityList);
+const facilityController = new FacilityController();
 
-router.get("/facilities/:facilityId/reviews", getFacilityReview);
+router.get("/facilities", facilityController.getFacilityList);
 
-router.get("/facilities/:facilityId", getFacility);
+router.get(
+  "/facilities/:facilityId/reviews",
+  facilityController.getFacilityReview,
+);
 
-router.post("/facilities", isLogin, createFacility);
+router.get("/facilities/:facilityId", facilityController.getFacility);
 
-router.post("/facilities/:facilityId/review", isLogin, createFacilityReview);
+router.post("/facilities", isLogin, facilityController.createFacility);
+
+router.post(
+  "/facilities/:facilityId/review",
+  isLogin,
+  facilityController.createFacilityReview,
+);
 
 export default router;
