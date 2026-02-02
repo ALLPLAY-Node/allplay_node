@@ -33,5 +33,5 @@ jobs:
             sudo docker stop allplay-server || true
             sudo docker rm allplay-server || true
             echo '${{ secrets.ENV_FILE }}' > .env
-            sudo docker run -d -p 80:3000 --env-file .env --name allplay-server ${{ secrets.DOCKER_USERNAME }}/allplay-app
+            sudo docker run -d -p 3000:3000 --env-file .env --name allplay-server ${{ secrets.DOCKER_USERNAME }}/allplay-app
             sudo docker image prune -f
