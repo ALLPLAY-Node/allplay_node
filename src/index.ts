@@ -12,6 +12,7 @@ import clubRouter from "./routes/club.routes.js";
 dotenv.config();
 
 const app = express();
+app.set("trust proxy", true);
 const port = process.env.PORT;
 const prisma = new PrismaClient();
 
