@@ -11,6 +11,7 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       callbackURL: "/auth/google/callback", // 구글 로그인 후 돌아올 주소
+      proxy: true,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
