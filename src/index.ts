@@ -5,26 +5,32 @@ import express, {
 } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-
+import passport from "passport";
+import { prisma } from "./db.config.js";
 import userRouter from "./routes/user.routes.js";
 
 dotenv.config();
 
 const app = express();
-app.set("trust proxy", 1);
-//EC2/Docker 리버스 프록시 환경에서 HTTPS 헤더 신뢰 설정
 const port = process.env.PORT || 3000;
-const prisma = new PrismaClient();
 
+// 프록시 신뢰 설정
+app.set("trust proxy", 1);
+
+// 미들웨어 설정
 app.use(cors());
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Passport 초기화
+app.use(passport.initialize());
+
 app.get("/", (req: Request, res: Response) => {
   res.send("ALLPLAY API Server Ready");
 });
 
+// 라우터 설정
 app.use("/api/v1/users", userRouter);
 
 // 전역 에러 핸들링

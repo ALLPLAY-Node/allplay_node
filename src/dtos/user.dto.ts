@@ -1,51 +1,25 @@
 import { Gender } from "@prisma/client";
 
-// 응답: 유저 정보
+// 응답: 유저 정보 변환
 export const userResponseDTO = (user: any) => {
   return {
     id: user.id.toString(),
-    email: user.email, // Team schema: email
+    email: user.email,
     name: user.name,
     birth: user.birth ? user.birth.toISOString().split("T")[0] : null,
     gender: user.gender,
     profilePhotoUrl: user.profile_photo_url || "",
     introduce: user.introduce || "",
-    region: user.region
+    region: user.Region
       ? {
-          city: user.region.city,
-          district: user.region.district,
+          city: user.Region.city,
+          district: user.Region.district,
         }
       : null,
   };
 };
 
-// 응답: 동호회 목록
-export const clubListDTO = (userClubs: any[]) => {
-  return {
-    items: userClubs.map((uc) => ({
-      id: uc.club.id.toString(),
-      name: uc.club.name,
-      level: uc.club.level, // Enum 그대로 전달
-      region: uc.club.region
-        ? `${uc.club.region.city} ${uc.club.region.district}`
-        : "지역 정보 없음",
-    })),
-  };
-};
-
-// 응답: 리뷰 목록
-export const reviewResponseDTO = (reviews: any[]) => {
-  return {
-    items: reviews.map((r) => ({
-      id: r.id.toString(),
-      facilityName: r.facility.name,
-      text: r.text,
-      createdAt: r.created_at ? r.created_at.toISOString().split("T")[0] : null,
-    })),
-  };
-};
-
-// 응답: 탈퇴 결과
+// 응답: 탈퇴 유저 정보
 export const userQuitResponseDTO = (user: any) => {
   return {
     userId: user.id.toString(),
@@ -63,6 +37,19 @@ export const updateUserBodyDTO = (body: any) => {
     profile_photo_url: body.profilePhotoUrl,
     region_id: body.regionId ? BigInt(body.regionId) : undefined,
     birth: body.birth ? new Date(body.birth) : undefined,
-    gender: body.gender as Gender, // Enum 타입 캐스팅
+    gender: body.gender ? (body.gender as Gender) : undefined,
   };
+};
+
+// 응답: 리뷰 목록 변환
+export const reviewResponseDTO = (reviews: any[]) => {
+  return reviews.map((review) => ({
+    id: review.id,
+    text: review.text,
+  }));
+};
+
+// 응답: 동호회 목록 변환
+export const clubListDTO = (userClubs: any[]) => {
+  return userClubs.map((club) => ({}));
 };
