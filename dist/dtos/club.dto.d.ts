@@ -15,7 +15,7 @@ export interface ClubRequest {
     homepageUrl: string;
 }
 export interface ClubListData {
-    id: bigint;
+    id: bigint | string;
     name: string | null;
     photos: {
         club_photo_url: string | null;
@@ -50,9 +50,9 @@ export interface JoinRequestData {
     created_at: Date | null;
 }
 export declare const joinRequestDtos: (data: JoinRequestData[]) => {
-    id: bigint;
-    clubId: bigint;
-    userId: bigint;
+    id: string;
+    clubId: string;
+    userId: string;
     applicationDate: Date | null;
 }[];
 export interface ClubResponseData {

@@ -62,11 +62,11 @@ export class ClubController {
       sportId as string | null,
       cursor as string | null,
     );
-    const clubs = data.clubs;
-    const len: number = clubs.length - 1;
+    const len: number = data.clubs.length - 1;
+    const responseClubs = clubListDtos(data.clubs);
     res.status(StatusCodes.OK).success("동호회 목록", {
-      items: clubListDtos(clubs),
-      cursor: clubs[len]?.id.toString() ?? null,
+      items: responseClubs,
+      cursor: data.clubs[len]?.id?.toString() ?? null,
       hasNext: data.hasNext,
     });
   };

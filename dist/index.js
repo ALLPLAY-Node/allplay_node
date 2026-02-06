@@ -9,6 +9,10 @@ import facilityRouter from "./routes/facility.routes.js";
 import presignedUrlRouter from "./routes/presigned-url.routes.js";
 import clubRouter from "./routes/club.routes.js";
 dotenv.config();
+// BigInt serialization support
+BigInt.prototype.toJSON = function () {
+    return this.toString();
+};
 const app = express();
 app.set("trust proxy", 1);
 //EC2/Docker 리버스 프록시 환경에서 HTTPS 헤더 신뢰 설정

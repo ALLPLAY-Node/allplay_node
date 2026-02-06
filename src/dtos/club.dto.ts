@@ -17,7 +17,7 @@ export interface ClubRequest {
 }
 
 export interface ClubListData {
-  id: bigint;
+  id: bigint | string;
   name: string | null;
   photos: { club_photo_url: string | null }[];
   summary: string | null;
@@ -55,9 +55,9 @@ export const joinRequestDtos = (data: JoinRequestData[]) => {
   const items = [];
   for (const item of data) {
     items.push({
-      id: item.id,
-      clubId: item.club_id,
-      userId: item.user_id,
+      id: item.id.toString(),
+      clubId: item.club_id.toString(),
+      userId: item.user_id.toString(),
       applicationDate: item.created_at,
     });
   }

@@ -31,11 +31,11 @@ export class ClubController {
         const sportId = req.query.sportId;
         const cursor = req.query.cursor;
         const data = await this.clubService.getClubs(regionId, ageGroup, keyword, sportId, cursor);
-        const clubs = data.clubs;
-        const len = clubs.length - 1;
+        const len = data.clubs.length - 1;
+        const responseClubs = clubListDtos(data.clubs);
         res.status(StatusCodes.OK).success("동호회 목록", {
-            items: clubListDtos(clubs),
-            cursor: clubs[len]?.id.toString() ?? null,
+            items: responseClubs,
+            cursor: data.clubs[len]?.id?.toString() ?? null,
             hasNext: data.hasNext,
         });
     };

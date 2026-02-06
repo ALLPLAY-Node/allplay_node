@@ -11,6 +11,11 @@ import clubRouter from "./routes/club.routes.js";
 
 dotenv.config();
 
+// BigInt serialization support
+(BigInt.prototype as any).toJSON = function () {
+  return this.toString();
+};
+
 const app = express();
 app.set("trust proxy", 1);
 //EC2/Docker 리버스 프록시 환경에서 HTTPS 헤더 신뢰 설정
