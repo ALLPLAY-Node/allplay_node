@@ -1,4 +1,3 @@
-import { Gender } from "@prisma/client";
 export declare const userResponseDTO: (user: any) => {
     id: any;
     email: any;
@@ -12,22 +11,6 @@ export declare const userResponseDTO: (user: any) => {
         district: any;
     } | null;
 };
-export declare const clubListDTO: (userClubs: any[]) => {
-    items: {
-        id: any;
-        name: any;
-        level: any;
-        region: string;
-    }[];
-};
-export declare const reviewResponseDTO: (reviews: any[]) => {
-    items: {
-        id: any;
-        facilityName: any;
-        text: any;
-        createdAt: any;
-    }[];
-};
 export declare const userQuitResponseDTO: (user: any) => {
     userId: any;
     status: string;
@@ -40,6 +23,11 @@ export declare const updateUserBodyDTO: (body: any) => {
     profile_photo_url: any;
     region_id: bigint | undefined;
     birth: Date | undefined;
-    gender: Gender;
+    gender: import("@prisma/client").$Enums.Gender | undefined;
 };
+export declare const reviewResponseDTO: (reviews: any[]) => {
+    id: any;
+    text: any;
+}[];
+export declare const clubListDTO: (userClubs: any[]) => {}[];
 //# sourceMappingURL=user.dto.d.ts.map

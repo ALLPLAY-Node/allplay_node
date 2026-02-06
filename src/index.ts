@@ -18,6 +18,7 @@ dotenv.config();
 };
 
 const app = express();
+app.set("trust proxy", 1); // EC2/Docker 리버스 프록시 환경에서 HTTPS 헤더 신뢰 설정
 const port = process.env.PORT || 3000; // 포트 미지정 시 3000 사용
 const prisma = new PrismaClient();
 
