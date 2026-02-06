@@ -1,19 +1,18 @@
-import dotenv from "dotenv";
-import express from "express";
+import express, {} from "express";
 import cors from "cors";
-import { PrismaClient } from "@prisma/client";
-import passport from "passport";
-import "./config/passport.config.js";
-import authRouter from "./routes/auth.routes.js";
-import facilityRouter from "./routes/facility.routes.js";
-import presignedUrlRouter from "./routes/presigned-url.routes.js";
-import clubRouter from "./routes/club.routes.js";
+import dotenv from "dotenv";
+import userRouter from "./routes/user.routes.js";
 dotenv.config();
 // BigInt serialization support
 BigInt.prototype.toJSON = function () {
     return this.toString();
 };
 const app = express();
+const port = process.env.PORT || 3000;
+app.use(cors());
+app.use(express.static("public"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.set("trust proxy", 1);
 //EC2/Docker 리버스 프록시 환경에서 HTTPS 헤더 신뢰 설정
 const port = process.env.PORT;
@@ -46,29 +45,17 @@ app.use(facilityRouter);
 app.use(presignedUrlRouter);
 app.use(clubRouter);
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.send("ALLPLAY API Server Ready");
 });
-/**
- * 전역 오류를 처리하기 위한 미들웨어
- */
+app.use("/api/v1/users", userRouter);
+// 전역 에러 핸들링
 app.use((err, req, res, next) => {
-    if (res.headersSent) {
-        return next(err);
-    }
-    res.status(err.statusCode || 500).error({
-        errorCode: err.errorCode || "unknown",
-        message: null,
-        reason: err.reason || err.message || null,
-        data: err.data || null,
-    });
+    console.error(err);
+    res
+        .status(500)
+        .json({ resultType: "FAIL", error: { message: "Internal Server Error" } });
 });
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+    console.log(`Server listening on port ${port}`);
 });
-// Graceful shutdown
-process.on("SIGINT", async () => {
-    await prisma.$disconnect();
-    process.exit(0);
-});
-export { prisma };
 //# sourceMappingURL=index.js.map

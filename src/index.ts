@@ -8,6 +8,7 @@ import authRouter from "./routes/auth.routes.js";
 import facilityRouter from "./routes/facility.routes.js";
 import presignedUrlRouter from "./routes/presigned-url.routes.js";
 import clubRouter from "./routes/club.routes.js";
+import userRouter from "./routes/user.routes.js";
 
 dotenv.config();
 
@@ -17,21 +18,16 @@ dotenv.config();
 };
 
 const app = express();
-app.set("trust proxy", 1);
-//EC2/Docker 리버스 프록시 환경에서 HTTPS 헤더 신뢰 설정
-const port = process.env.PORT;
+const port = process.env.PORT || 3000; // 포트 미지정 시 3000 사용
 const prisma = new PrismaClient();
 
 app.use(cors()); // cors 방식 허용
 app.use(express.static("public")); // 정적 파일 접근
 app.use(express.static("uploads")); // 업로드된 파일 접근
-app.use(express.json()); // request의 본문을 json으로 해석할 수 있도록 함 (JSON 형태의 요청 body를 파싱하기 위함)
+app.use(express.json()); // JSON 형태의 요청 body를 파싱
 app.use(passport.initialize());
 app.use(express.urlencoded({ extended: false })); // 단순 객체 문자열 형태로 본문 데이터 해석
 
-/**
- * 공통 응답을 사용할 수 있는 헬퍼 함수 등록
- */
 app.use((req, res, next) => {
   res.success = (message: string, success: any) => {
     return res.json({ resultType: "SUCCESS", message, error: null, success });
@@ -49,18 +45,23 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((req: any, res: any, next: any) => {
+  req.user = { id: 1 }; // 1번 유저로 테스트
+  next();
+});
+
 app.use("/auth", authRouter);
 app.use(facilityRouter);
 app.use(presignedUrlRouter);
 app.use(clubRouter);
 
+// 유저 라우터 추가 (기존 라우터들과 규칙을 맞춤)
+app.use("/api/v1/users", userRouter);
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-/**
- * 전역 오류를 처리하기 위한 미들웨어
- */
 app.use((err: any, req: any, res: any, next: any) => {
   if (res.headersSent) {
     return next(err);
@@ -78,7 +79,6 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-// Graceful shutdown
 process.on("SIGINT", async () => {
   await prisma.$disconnect();
   process.exit(0);

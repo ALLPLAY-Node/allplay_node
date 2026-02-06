@@ -1,11 +1,11 @@
-import { PrismaClient } from '@prisma/client';
-import {} from '../dtos/auth.dto.js';
+import { PrismaClient } from "@prisma/client";
+import {} from "../dtos/auth.dto.js";
 const prisma = new PrismaClient();
 export class AuthRepository {
     // googleId를 Users 테이블의 user_id 필드에서 조회
     async findByGoogleId(googleId) {
         return await prisma.users.findFirst({
-            where: { user_id: googleId }
+            where: { user_id: googleId },
         });
     }
     async createUser(data) {

@@ -2,9 +2,9 @@ import type { FacilityReviewDto } from "../dtos/facility.dto.js";
 export declare class ReviewRepository {
     addReview: (review: FacilityReviewDto, facilityId: bigint, userId: bigint) => Promise<{
         id: bigint;
-        user_id: bigint;
         created_at: Date | null;
         updated_at: Date | null;
+        user_id: bigint;
         facility_id: bigint;
         text: string | null;
     }>;
@@ -17,9 +17,9 @@ export declare class ReviewRepository {
         }[];
     } & {
         id: bigint;
-        user_id: bigint;
         created_at: Date | null;
         updated_at: Date | null;
+        user_id: bigint;
         facility_id: bigint;
         text: string | null;
     })[]>;

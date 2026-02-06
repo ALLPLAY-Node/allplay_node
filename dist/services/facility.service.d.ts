@@ -6,20 +6,20 @@ export declare class FacilityService {
     private facilityRepository;
     private reviewRepository;
     facilityAdd: (facility: FacilityDto, operator_id: bigint) => Promise<{
-        name: string | null;
         id: bigint;
+        name: string | null;
         created_at: Date | null;
         updated_at: Date | null;
         region_id: bigint;
+        link: string | null;
+        url: string | null;
+        contact_number: string | null;
         sport_type: bigint;
         address: string | null;
         cost: string | null;
         introduction: string | null;
         information: string | null;
         usage_guide: string | null;
-        contact_number: string | null;
-        url: string | null;
-        link: string | null;
         operating_hours: string | null;
         is_public: boolean | null;
         apply_method: string | null;
@@ -27,9 +27,9 @@ export declare class FacilityService {
     }>;
     facilityReviewAdd: (review: FacilityReviewDto, facilityId: bigint, userId: bigint) => Promise<{
         id: bigint;
-        user_id: bigint;
         created_at: Date | null;
         updated_at: Date | null;
+        user_id: bigint;
         facility_id: bigint;
         text: string | null;
     }>;
@@ -45,20 +45,19 @@ export declare class FacilityService {
         };
         photos: {
             id: bigint;
-            facility_photo_url: string | null;
-            uploaded_at: Date | null;
             facility_id: bigint;
+            uploaded_at: Date | null;
+            facility_photo_url: string | null;
         }[];
         operator: {
-            name: string | null;
             id: bigint;
+            email: string | null;
+            name: string | null;
             phone_number: string | null;
-            user_id: string | null;
             password: string | null;
             birth: Date | null;
             gender: import("@prisma/client").$Enums.Gender | null;
             profile_photo_url: string | null;
-            email: string | null;
             introduce: string | null;
             status: boolean | null;
             inactive_date: Date | null;
@@ -72,20 +71,20 @@ export declare class FacilityService {
             sport_type: string | null;
         };
     } & {
-        name: string | null;
         id: bigint;
+        name: string | null;
         created_at: Date | null;
         updated_at: Date | null;
         region_id: bigint;
+        link: string | null;
+        url: string | null;
+        contact_number: string | null;
         sport_type: bigint;
         address: string | null;
         cost: string | null;
         introduction: string | null;
         information: string | null;
         usage_guide: string | null;
-        contact_number: string | null;
-        url: string | null;
-        link: string | null;
         operating_hours: string | null;
         is_public: boolean | null;
         apply_method: string | null;
@@ -100,29 +99,29 @@ export declare class FacilityService {
             };
             photos: {
                 id: bigint;
-                facility_photo_url: string | null;
-                uploaded_at: Date | null;
                 facility_id: bigint;
+                uploaded_at: Date | null;
+                facility_photo_url: string | null;
             }[];
             sport: {
                 id: bigint;
                 sport_type: string | null;
             };
         } & {
-            name: string | null;
             id: bigint;
+            name: string | null;
             created_at: Date | null;
             updated_at: Date | null;
             region_id: bigint;
+            link: string | null;
+            url: string | null;
+            contact_number: string | null;
             sport_type: bigint;
             address: string | null;
             cost: string | null;
             introduction: string | null;
             information: string | null;
             usage_guide: string | null;
-            contact_number: string | null;
-            url: string | null;
-            link: string | null;
             operating_hours: string | null;
             is_public: boolean | null;
             apply_method: string | null;
