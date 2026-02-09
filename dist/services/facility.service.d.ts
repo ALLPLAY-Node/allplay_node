@@ -23,6 +23,8 @@ export declare class FacilityService {
         operating_hours: string | null;
         is_public: boolean | null;
         apply_method: string | null;
+        latitude: string | null;
+        longitude: string | null;
         operator_id: bigint;
     }>;
     facilityReviewAdd: (review: FacilityReviewDto, facilityId: bigint, userId: bigint) => Promise<{
@@ -89,6 +91,8 @@ export declare class FacilityService {
         operating_hours: string | null;
         is_public: boolean | null;
         apply_method: string | null;
+        latitude: string | null;
+        longitude: string | null;
         operator_id: bigint;
     }>;
     facilityListGet: (cursor: number, regionId: number | null, isReservable: boolean | null, isPublic: boolean | null, isFree: boolean | null, keyword: string | null, sportId: number | null) => Promise<{
@@ -126,6 +130,8 @@ export declare class FacilityService {
             operating_hours: string | null;
             is_public: boolean | null;
             apply_method: string | null;
+            latitude: string | null;
+            longitude: string | null;
             operator_id: bigint;
         })[];
         hasNext: boolean;

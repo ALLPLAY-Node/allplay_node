@@ -19,6 +19,7 @@ export declare const facilityResponseDto: (facility: any) => {
     sportType: any;
     facilityName: any;
     isPublic: any;
+    isReservable: boolean;
     city: any;
     district: any;
     address: any;

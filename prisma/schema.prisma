@@ -52,6 +52,8 @@ model SportFacilities {
   operating_hours String? @db.VarChar(15)
   is_public      Boolean? @default(false)
   apply_method   String? @db.VarChar(30)
+  latitude       String?  @db.VarChar(30)
+  longitude      String?  @db.VarChar(30)
 
   @@map("sport_facilities")
 

@@ -38,6 +38,7 @@ export const facilityResponseDto = (facility: any) => {
     sportType: facility.sport?.sport_type ?? "",
     facilityName: facility.name ?? "",
     isPublic: facility.is_public ?? false,
+    isReservable: facility.apply_method !== null,
     city: facility.region?.city ?? "",
     district: facility.region?.district ?? "",
     address: facility.address ?? "",
