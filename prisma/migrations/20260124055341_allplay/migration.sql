@@ -17,8 +17,6 @@ CREATE TABLE `facility_photos` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- CreateIndex
-CREATE UNIQUE INDEX `join_request_club_id_user_id_key` ON `join_request`(`club_id`, `user_id`);
 
 -- AddForeignKey
 ALTER TABLE `facility_photos` ADD CONSTRAINT `facility_photos_facility_id_fkey` FOREIGN KEY (`facility_id`) REFERENCES `sport_facilities`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

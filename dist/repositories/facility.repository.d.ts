@@ -18,6 +18,8 @@ export declare class FacilityRepository {
         operating_hours: string | null;
         is_public: boolean | null;
         apply_method: string | null;
+        latitude: string | null;
+        longitude: string | null;
         operator_id: bigint;
     }>;
     getFacilityById: (facilityId: bigint) => Promise<({
@@ -72,6 +74,8 @@ export declare class FacilityRepository {
         operating_hours: string | null;
         is_public: boolean | null;
         apply_method: string | null;
+        latitude: string | null;
+        longitude: string | null;
         operator_id: bigint;
     }) | null>;
     getFacilityList: (cursor: number, regionId: number | null, isReservable: boolean | null, isPublic: boolean | null, isFree: boolean | null, keyword: string | null, sportId: number | null) => Promise<({
@@ -108,6 +112,8 @@ export declare class FacilityRepository {
         operating_hours: string | null;
         is_public: boolean | null;
         apply_method: string | null;
+        latitude: string | null;
+        longitude: string | null;
         operator_id: bigint;
     })[]>;
 }
