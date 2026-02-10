@@ -40,18 +40,13 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req: any, res: any, next: any) => {
-  req.user = { id: 1 }; // 1번 유저로 테스트
-  next();
-});
-
 app.use("/auth", authRouter);
 app.use(facilityRouter);
 app.use(presignedUrlRouter);
 app.use(clubRouter);
 
 // 유저 라우터 추가 (기존 라우터들과 규칙을 맞춤)
-app.use("/api/v1/users", userRouter);
+app.use("/users", userRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
