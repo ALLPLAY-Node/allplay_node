@@ -13,8 +13,19 @@ export class AuthController {
 
     // 프론트엔드로 토큰과 함께 리다이렉트
 
-    const frontendUrl = `http://localhost:3000/login/success?accessToken=${tokens.accessToken}`;
-    res.redirect(frontendUrl);
+    // const frontendUrl = `http://localhost:3000/login/success?accessToken=${tokens.accessToken}`;
+    // res.redirect(frontendUrl);
+
+    //연결 임시 확인용 코드
+    res.status(200).json({
+      message: "로그인 성공!",
+      user: {
+        id: user.id.toString(),
+        email: user.email,
+        name: user.name,
+      },
+      tokens,
+    });
   };
   // GET /auth/refresh
   refresh = async (req: Request, res: Response) => {
