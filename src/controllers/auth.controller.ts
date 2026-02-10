@@ -11,21 +11,10 @@ export class AuthController {
     // 우리 서비스 전용 JWT 발급
     const tokens = this.authService.generateTokens(user.id.toString());
 
-    // 프론트엔드로 토큰과 함께 리다이렉트
+    //프론트엔드로 토큰과 함께 리다이렉트
 
-    // const frontendUrl = `http://localhost:3000/login/success?accessToken=${tokens.accessToken}`;
-    // res.redirect(frontendUrl);
-
-    //연결 임시 확인용 코드
-    res.status(200).json({
-      message: "로그인 성공!",
-      user: {
-        id: user.id.toString(),
-        email: user.email,
-        name: user.name,
-      },
-      tokens,
-    });
+    const frontendUrl = `http://localhost:5173/login/success?accessToken=${tokens.accessToken}`;
+    res.redirect(frontendUrl);
   };
   // GET /auth/refresh
   refresh = async (req: Request, res: Response) => {
