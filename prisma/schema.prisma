@@ -66,7 +66,7 @@ model Review {
   id          BigInt   @id @default(autoincrement())
   user_id     BigInt
   facility_id BigInt
-  text        String?
+  text        String? @db.Text
   created_at  DateTime? @default(now())
   updated_at  DateTime? @updatedAt
 
