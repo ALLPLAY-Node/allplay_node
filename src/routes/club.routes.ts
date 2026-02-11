@@ -15,6 +15,8 @@ router.get(
   clubController.getJoinRequests,
 );
 
+router.get("/clubs/:clubId/members", isLogin, clubController.getClubMembers);
+
 router.post("/clubs", isLogin, clubController.clubAdd);
 
 router.post("/clubs/:clubId/join", isLogin, clubController.clubJoin);
