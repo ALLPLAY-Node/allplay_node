@@ -30,7 +30,18 @@ export const updateUserStatus = async (userId: number) => {
 
 // 동호회 목록 조회
 export const findUserClubs = async (userId: number) => {
-  return []; // 임시 빈 배열
+  return await prisma.userClubs.findMany({
+    where: { user_id: userId, is_leader: false },
+    include: { club: true },
+  });
+};
+
+// 운영중인 동호회 목록 조회
+export const findUserManagedClubs = async (userId: number) => {
+  return await prisma.userClubs.findMany({
+    where: { is_leader: true, user_id: userId },
+    include: { club: true },
+  });
 };
 
 // 리뷰 목록 조회
