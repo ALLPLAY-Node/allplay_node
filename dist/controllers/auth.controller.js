@@ -6,8 +6,8 @@ export class AuthController {
         const user = req.user; // Passport가 넣어준 유저 정보
         // 우리 서비스 전용 JWT 발급
         const tokens = this.authService.generateTokens(user.id.toString());
-        // 프론트엔드로 토큰과 함께 리다이렉트
-        const frontendUrl = `http://localhost:3000/login/success?accessToken=${tokens.accessToken}`;
+        //프론트엔드로 토큰과 함께 리다이렉트
+        const frontendUrl = `http://localhost:5173/login/success?accessToken=${tokens.accessToken}&refreshToken=${tokens.refreshToken}`;
         res.redirect(frontendUrl);
     };
     // GET /auth/refresh

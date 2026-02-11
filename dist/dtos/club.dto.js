@@ -5,7 +5,7 @@ export const clubListDtos = (data) => {
         items.push({
             id: item.id.toString(),
             clubName: item.name,
-            clubPhotoURL: item.photos,
+            clubPhotoURL: item.photos.map((photo) => photo.club_photo_url),
             description: item.summary,
             joinRequirement: item.join_requirement,
             region: item.region?.city + " " + item.region?.district,

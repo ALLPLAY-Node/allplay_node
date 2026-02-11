@@ -67,7 +67,7 @@ export class FacilityController {
         const sportId = req.query.sportId ? Number(req.query.sportId) : null;
         const facilities = await this.facilityService.facilityListGet(cursor, regionId, isReservable, isPublic, isFree, keyword, sportId);
         res.status(StatusCodes.OK).success("", {
-            data: facilities.data.map(facilityResponseDto),
+            items: facilities.data.map(facilityResponseDto),
             hasNext: facilities.hasNext,
             cursor: facilities.data.length > 0
                 ? facilities.data[facilities.data.length - 1].id.toString()

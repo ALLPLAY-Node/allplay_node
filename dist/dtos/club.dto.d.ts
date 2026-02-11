@@ -34,9 +34,7 @@ export interface ClubListData {
 export declare const clubListDtos: (data: ClubListData[]) => {
     id: string;
     clubName: string | null;
-    clubPhotoURL: {
-        club_photo_url: string | null;
-    }[];
+    clubPhotoURL: (string | null)[];
     description: string | null;
     joinRequirement: string | null;
     region: string;
