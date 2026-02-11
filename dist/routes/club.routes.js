@@ -6,6 +6,7 @@ const clubController = new ClubController();
 router.get("/clubs", clubController.getClubs);
 router.get("/clubs/:clubId", clubController.getClub);
 router.get("/clubs/:clubId/join-requests", isLogin, clubController.getJoinRequests);
+router.get("/clubs/:clubId/members", isLogin, clubController.getClubMembers);
 router.post("/clubs", isLogin, clubController.clubAdd);
 router.post("/clubs/:clubId/join", isLogin, clubController.clubJoin);
 router.post("/clubs/:clubId/join-requests/:requestId", isLogin, clubController.approveJoinRequest);

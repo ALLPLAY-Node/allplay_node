@@ -9,5 +9,6 @@ export declare class ClubController {
     getJoinRequests: (req: Request, res: Response, next: NextFunction) => Promise<void>;
     approveJoinRequest: (req: Request, res: Response, next: NextFunction) => Promise<void>;
     leaveClub: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    getClubMembers: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 }
 //# sourceMappingURL=club.controller.d.ts.map

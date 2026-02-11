@@ -1,5 +1,5 @@
 import { ClubService } from "../services/club.service.js";
-import { joinRequestDtos, clubListDtos, clubResponseDto, } from "../dtos/club.dto.js";
+import { joinRequestDtos, clubListDtos, clubResponseDto, memberDtos, } from "../dtos/club.dto.js";
 import { ClubNotFoundError } from "../errors.js";
 import { StatusCodes } from "http-status-codes";
 export class ClubController {
@@ -78,6 +78,14 @@ export class ClubController {
         const clubId = Number(req.params.clubId);
         await this.clubService.leaveClub(userId, clubId);
         res.status(StatusCodes.OK).success("탈퇴 완료", {});
+    };
+    getClubMembers = async (req, res, next) => {
+        const clubId = Number(req.params.clubId);
+        const userId = req.user.id;
+        const members = await this.clubService.getClubMembers(clubId, userId);
+        res.status(StatusCodes.OK).success("동호회 회원 목록", {
+            items: memberDtos(members),
+        });
     };
 }
 //# sourceMappingURL=club.controller.js.map
