@@ -87,7 +87,7 @@ export const clubResponseDto = (data: ClubResponseData) => {
   return {
     id: data.id.toString(),
     clubName: data.name,
-    clubPhotoURL: data.photos,
+    clubPhotoURL: data.photos.map((photo) => photo.club_photo_url),
     operator: data.members[0]?.user,
     region: data.region?.city + " " + data.region?.district,
     level: data.level,

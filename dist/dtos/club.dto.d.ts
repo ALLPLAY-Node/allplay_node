@@ -81,9 +81,7 @@ export interface ClubResponseData {
 export declare const clubResponseDto: (data: ClubResponseData) => {
     id: string;
     clubName: string | null;
-    clubPhotoURL: {
-        club_photo_url: string | null;
-    }[];
+    clubPhotoURL: (string | null)[];
     operator: {
         name: string | null;
         introduce: string | null;
