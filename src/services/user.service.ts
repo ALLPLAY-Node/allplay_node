@@ -33,6 +33,10 @@ export const getClubs = async (userId: number) => {
   return await userRepo.findUserClubs(userId);
 };
 
+export const getManagedClubs = async (userId: number) => {
+  return await userRepo.findUserManagedClubs(userId);
+};
+
 // 리뷰 목록 조회
 export const getReviews = async (userId: number, reviewId?: number) => {
   const reviews = await userRepo.findUserReviews(userId, reviewId);
