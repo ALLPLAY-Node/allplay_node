@@ -113,7 +113,7 @@ export class FacilityController {
       sportId,
     );
     res.status(StatusCodes.OK).success("", {
-      data: facilities.data.map(facilityResponseDto),
+      items: facilities.data.map(facilityResponseDto),
       hasNext: facilities.hasNext,
       cursor:
         facilities.data.length > 0
