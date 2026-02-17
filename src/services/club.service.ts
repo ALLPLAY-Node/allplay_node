@@ -31,6 +31,12 @@ export class ClubService {
   private clubUserRepository = new ClubUserRepository();
   private joinRequestRepository = new JoinRequestRepository();
 
+  // S3 URL에서 key만 추출하는 함수
+  extractS3Key = (url: string): string => {
+    const match = url.match(/amazonaws\.com\/(.+)$/);
+    return match ? match[1]! : url;
+  };
+
   clubAdd = async (clubData: ClubRequest, userId: number) => {
     const region = await this.regionRepository.findRegionByCityAndDistrict(
       clubData.city,
@@ -45,14 +51,25 @@ export class ClubService {
     if (!sport) {
       throw new SportNotFoundError("Sport type not found", clubData);
     }
+    // S3 URL에서 key만 추출하는 함수
+    function extractS3Key(url: string): string {
+      const match = url.match(/amazonaws\.com\/(.+)$/);
+      return match ? match[1]! : url;
+    }
+    let clubDataToSave = { ...clubData };
+    if (Array.isArray(clubData.imageURL)) {
+      clubDataToSave.imageURL = clubData.imageURL.map((url) =>
+        extractS3Key(url),
+      );
+    }
     const club = await this.clubRepository.addClub(
-      clubData,
+      clubDataToSave,
       userId,
       region.id,
       sport.id,
     );
-    if (clubData.imageURL) {
-      await addClubPhotos(clubData.imageURL, club.id);
+    if (clubDataToSave.imageURL) {
+      await addClubPhotos(clubDataToSave.imageURL, club.id);
     }
     return club;
   };
@@ -87,8 +104,15 @@ export class ClubService {
         clubData,
       );
     }
+
+    let clubDataToSave = { ...clubData };
+    if (Array.isArray(clubData.imageURL)) {
+      clubDataToSave.imageURL = clubData.imageURL.map((url) =>
+        this.extractS3Key(url),
+      );
+    }
     const updatedClub = await this.clubRepository.updateClub(
-      clubData,
+      clubDataToSave,
       clubId,
       region.id,
       sport.id,

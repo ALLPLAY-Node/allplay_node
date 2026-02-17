@@ -5,6 +5,7 @@ export declare class FacilityService {
     private sportTypeRepository;
     private facilityRepository;
     private reviewRepository;
+    extractS3Key: (url: string) => string;
     facilityAdd: (facility: FacilityDto, operator_id: bigint) => Promise<{
         name: string | null;
         id: bigint;

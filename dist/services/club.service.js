@@ -17,6 +17,11 @@ export class ClubService {
     sportTypeRepository = new SportTypeRepository();
     clubUserRepository = new ClubUserRepository();
     joinRequestRepository = new JoinRequestRepository();
+    // S3 URL에서 key만 추출하는 함수
+    extractS3Key = (url) => {
+        const match = url.match(/amazonaws\.com\/(.+)$/);
+        return match ? match[1] : url;
+    };
     clubAdd = async (clubData, userId) => {
         const region = await this.regionRepository.findRegionByCityAndDistrict(clubData.city, clubData.district);
         if (!region) {
@@ -26,9 +31,18 @@ export class ClubService {
         if (!sport) {
             throw new SportNotFoundError("Sport type not found", clubData);
         }
-        const club = await this.clubRepository.addClub(clubData, userId, region.id, sport.id);
-        if (clubData.imageURL) {
-            await addClubPhotos(clubData.imageURL, club.id);
+        // S3 URL에서 key만 추출하는 함수
+        function extractS3Key(url) {
+            const match = url.match(/amazonaws\.com\/(.+)$/);
+            return match ? match[1] : url;
+        }
+        let clubDataToSave = { ...clubData };
+        if (Array.isArray(clubData.imageURL)) {
+            clubDataToSave.imageURL = clubData.imageURL.map((url) => extractS3Key(url));
+        }
+        const club = await this.clubRepository.addClub(clubDataToSave, userId, region.id, sport.id);
+        if (clubDataToSave.imageURL) {
+            await addClubPhotos(clubDataToSave.imageURL, club.id);
         }
         return club;
     };
@@ -48,7 +62,11 @@ export class ClubService {
         if (clubLeader.user_id !== BigInt(userId)) {
             throw new ClubNotAuthorizedError("not authorized to update this club", clubData);
         }
-        const updatedClub = await this.clubRepository.updateClub(clubData, clubId, region.id, sport.id);
+        let clubDataToSave = { ...clubData };
+        if (Array.isArray(clubData.imageURL)) {
+            clubDataToSave.imageURL = clubData.imageURL.map((url) => this.extractS3Key(url));
+        }
+        const updatedClub = await this.clubRepository.updateClub(clubDataToSave, clubId, region.id, sport.id);
         return updatedClub;
     };
     getClubs = async (regionId, ageGroup, keyword, sportId, cursor) => {

@@ -8,6 +8,11 @@ export class FacilityService {
     sportTypeRepository = new SportTypeRepository();
     facilityRepository = new FacilityRepository();
     reviewRepository = new ReviewRepository();
+    // S3 URL에서 key만 추출하는 함수
+    extractS3Key = function (url) {
+        const match = url.match(/amazonaws\.com\/(.+)$/);
+        return match ? match[1] : url;
+    };
     facilityAdd = async (facility, operator_id) => {
         const region = await this.regionRepository.findRegionByCityAndDistrict(facility.city, facility.district);
         if (!region) {
@@ -17,7 +22,11 @@ export class FacilityService {
         if (!sport) {
             throw new SportNotFoundError("Sport type not found", {});
         }
-        const data = await this.facilityRepository.addFacility(facility, operator_id, region.id, sport.id);
+        let facilityToSave = { ...facility };
+        if (Array.isArray(facility.imageUrl)) {
+            facilityToSave.imageUrl = facility.imageUrl.map((url) => this.extractS3Key(url));
+        }
+        const data = await this.facilityRepository.addFacility(facilityToSave, operator_id, region.id, sport.id);
         return data;
     };
     facilityReviewAdd = async (review, facilityId, userId) => {
@@ -25,7 +34,11 @@ export class FacilityService {
         if (!facility) {
             throw new FacilityNotFoundError("Facility not found", facilityId.toString());
         }
-        const data = await this.reviewRepository.addReview(review, facilityId, userId);
+        let reviewToSave = { ...review };
+        if (Array.isArray(review.photoUrl)) {
+            reviewToSave.photoUrl = review.photoUrl.map((url) => this.extractS3Key(url));
+        }
+        const data = await this.reviewRepository.addReview(reviewToSave, facilityId, userId);
         if (!data) {
             throw new FailToAddReviewError("Fail to add review", {});
         }
