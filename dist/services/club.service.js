@@ -139,5 +139,16 @@ export class ClubService {
         }
         return data;
     };
+    getClubMembers = async (clubId, userId) => {
+        const clubLeader = await this.clubUserRepository.getClubLeaderByClubId(BigInt(clubId));
+        if (!clubLeader) {
+            throw new ClubLeaderNotFoundError("Club leader not found", {});
+        }
+        if (clubLeader.user_id !== BigInt(userId)) {
+            throw new ClubNotAuthorizedError("not authorized to manage join requests", {});
+        }
+        const members = await this.clubUserRepository.getClubMembers(BigInt(clubId));
+        return members;
+    };
 }
 //# sourceMappingURL=club.service.js.map

@@ -36,6 +36,9 @@ export const quitService = async (userId) => {
 export const getClubs = async (userId) => {
     return await userRepo.findUserClubs(userId);
 };
+export const getManagedClubs = async (userId) => {
+    return await userRepo.findUserManagedClubs(userId);
+};
 // 리뷰 목록 조회
 export const getReviews = async (userId, reviewId) => {
     const reviews = await userRepo.findUserReviews(userId, reviewId);
