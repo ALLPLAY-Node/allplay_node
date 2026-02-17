@@ -19,7 +19,7 @@ export class FacilityRepository {
                     created_at: new Date(),
                 },
             });
-            for (const photo of facility.imageUrl ?? []) {
+            for (const photo of facility.imageURL ?? []) {
                 await tx.facilityPhotos.create({
                     data: {
                         facility_id: facilityData.id,

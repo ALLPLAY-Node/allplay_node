@@ -38,8 +38,8 @@ export class FacilityService {
       throw new SportNotFoundError("Sport type not found", {});
     }
     let facilityToSave = { ...facility };
-    if (Array.isArray(facility.imageUrl)) {
-      facilityToSave.imageUrl = facility.imageUrl.map((url) =>
+    if (Array.isArray(facility.imageURL)) {
+      facilityToSave.imageURL = facility.imageURL.map((url) =>
         this.extractS3Key(url),
       );
     }

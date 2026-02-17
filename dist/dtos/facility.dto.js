@@ -6,7 +6,7 @@ export const facilityDto = (body) => {
         district: body.district,
         address: body.address,
         operatingHours: body.operatingHours,
-        imageUrl: body.imageUrl,
+        imageURL: body.imageURL,
         introduction: body.introduction,
         information: body.information,
         usageGuide: body.usageGuide,
