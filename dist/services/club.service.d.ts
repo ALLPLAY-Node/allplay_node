@@ -11,6 +11,7 @@ export declare class ClubService {
     private sportTypeRepository;
     private clubUserRepository;
     private joinRequestRepository;
+    extractS3Key: (url: string) => string;
     clubAdd: (clubData: ClubRequest, userId: number) => Promise<{
         name: string | null;
         id: bigint;

@@ -31,19 +31,31 @@ export class FacilityController {
     getFacilityReview = async (req, res, next) => {
         const facilityId = Number(req.params.facilityId);
         const cursor = Number(req.query.cursor) || 0;
-        const reviews = await this.facilityService.facilityReviewGet(BigInt(facilityId), BigInt(cursor));
+        const { ReviewService } = await import("../services/review.service.js");
+        const reviewService = new ReviewService();
+        const reviews = await reviewService.getFacilityReviewWithPresignedUrl(BigInt(facilityId), BigInt(cursor));
+        // photos 필드를 photoUrl 배열로 변환
+        const reviewDtos = reviews.map((review) => ({
+            ...review,
+            photos: Array.isArray(review.photos)
+                ? review.photos.map((photo) => photo.photo_url).filter((url) => !!url)
+                : [],
+        }));
         res.status(StatusCodes.OK).success("", {
-            data: reviewDto(reviews.data),
-            hasNext: reviews.hasNext,
-            cursor: reviews.data.length > 0
-                ? reviews.data[reviews.data.length - 1].id.toString()
+            data: reviewDtos,
+            hasNext: reviews.length > 10,
+            cursor: reviews.length > 0
+                ? (reviews[reviews.length - 1]?.id?.toString() ?? cursor.toString())
                 : cursor.toString(),
         });
     };
     getFacility = async (req, res, next) => {
         const facilityId = Number(req.params.facilityId);
         const facility = await this.facilityService.facilityGet(BigInt(facilityId));
-        res.status(StatusCodes.OK).success("", facilityResponseDto(facility));
+        const { getPresignedUrls } = await import("../services/presignedURL.util.js");
+        const facilityData = facilityResponseDto(facility);
+        facilityData.imageUrl = await getPresignedUrls(facilityData.imageUrl, "facilities");
+        res.status(StatusCodes.OK).success("", facilityData);
     };
     getFacilityList = async (req, res, next) => {
         const cursor = req.query.cursor ? Number(req.query.cursor) : 0;
@@ -66,8 +78,14 @@ export class FacilityController {
         const keyword = typeof req.query.keyword === "string" ? req.query.keyword : null;
         const sportId = req.query.sportId ? Number(req.query.sportId) : null;
         const facilities = await this.facilityService.facilityListGet(cursor, regionId, isReservable, isPublic, isFree, keyword, sportId);
+        const { getPresignedUrls } = await import("../services/presignedURL.util.js");
+        const items = await Promise.all(facilities.data.map(async (facility) => {
+            const dto = facilityResponseDto(facility);
+            dto.imageUrl = await getPresignedUrls(dto.imageUrl, "facilities");
+            return dto;
+        }));
         res.status(StatusCodes.OK).success("", {
-            items: facilities.data.map(facilityResponseDto),
+            items,
             hasNext: facilities.hasNext,
             cursor: facilities.data.length > 0
                 ? facilities.data[facilities.data.length - 1].id.toString()

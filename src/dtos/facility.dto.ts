@@ -5,7 +5,7 @@ export interface FacilityDto {
   district: string;
   address: string;
   operatingHours: string;
-  imageUrl?: string[] | undefined;
+  imageURL?: string[] | undefined;
   introduction: string;
   information: string;
   usageGuide: string;
@@ -22,7 +22,7 @@ export const facilityDto = (body: FacilityDto): FacilityDto => {
     district: body.district,
     address: body.address,
     operatingHours: body.operatingHours,
-    imageUrl: body.imageUrl,
+    imageURL: body.imageURL,
     introduction: body.introduction,
     information: body.information,
     usageGuide: body.usageGuide,

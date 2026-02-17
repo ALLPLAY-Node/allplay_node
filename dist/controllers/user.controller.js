@@ -9,9 +9,15 @@ export const handleGetMe = async (req, res, next) => {
         if (!userId)
             throw new Error("로그인 필요");
         const user = await userSer.getProfile(userId);
+        const { getPresignedUrls } = await import("../services/presignedURL.util.js");
+        const userData = userResponseDTO(user);
+        if (userData.profilePhotoUrl) {
+            const urls = await getPresignedUrls([userData.profilePhotoUrl], "users");
+            userData.profilePhotoUrl = urls[0] || "";
+        }
         res
             .status(StatusCodes.OK)
-            .json({ resultType: "SUCCESS", success: userResponseDTO(user) });
+            .json({ resultType: "SUCCESS", success: userData });
     }
     catch (error) {
         next(error);

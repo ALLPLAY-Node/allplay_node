@@ -57,17 +57,25 @@ export class FacilityController {
   ) => {
     const facilityId = Number(req.params.facilityId);
     const cursor = Number(req.query.cursor) || 0;
-    const reviews = await this.facilityService.facilityReviewGet(
+    const { ReviewService } = await import("../services/review.service.js");
+    const reviewService = new ReviewService();
+    const reviews = await reviewService.getFacilityReviewWithPresignedUrl(
       BigInt(facilityId),
       BigInt(cursor),
     );
-
+    // photos 필드를 photoUrl 배열로 변환
+    const reviewDtos = reviews.map((review) => ({
+      ...review,
+      photos: Array.isArray(review.photos)
+        ? review.photos.map((photo) => photo.photo_url).filter((url) => !!url)
+        : [],
+    }));
     res.status(StatusCodes.OK).success("", {
-      data: reviewDto(reviews.data),
-      hasNext: reviews.hasNext,
+      data: reviewDtos,
+      hasNext: reviews.length > 10,
       cursor:
-        reviews.data.length > 0
-          ? reviews.data[reviews.data.length - 1]!.id.toString()
+        reviews.length > 0
+          ? (reviews[reviews.length - 1]?.id?.toString() ?? cursor.toString())
           : cursor.toString(),
     });
   };
@@ -75,7 +83,14 @@ export class FacilityController {
   getFacility = async (req: Request, res: Response, next: NextFunction) => {
     const facilityId = Number(req.params.facilityId);
     const facility = await this.facilityService.facilityGet(BigInt(facilityId));
-    res.status(StatusCodes.OK).success("", facilityResponseDto(facility));
+    const { getPresignedUrls } =
+      await import("../services/presignedURL.util.js");
+    const facilityData = facilityResponseDto(facility);
+    facilityData.imageUrl = await getPresignedUrls(
+      facilityData.imageUrl,
+      "facilities",
+    );
+    res.status(StatusCodes.OK).success("", facilityData);
   };
 
   getFacilityList = async (req: Request, res: Response, next: NextFunction) => {
@@ -112,8 +127,17 @@ export class FacilityController {
       keyword,
       sportId,
     );
+    const { getPresignedUrls } =
+      await import("../services/presignedURL.util.js");
+    const items = await Promise.all(
+      facilities.data.map(async (facility) => {
+        const dto = facilityResponseDto(facility);
+        dto.imageUrl = await getPresignedUrls(dto.imageUrl, "facilities");
+        return dto;
+      }),
+    );
     res.status(StatusCodes.OK).success("", {
-      items: facilities.data.map(facilityResponseDto),
+      items,
       hasNext: facilities.hasNext,
       cursor:
         facilities.data.length > 0

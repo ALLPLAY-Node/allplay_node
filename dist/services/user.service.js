@@ -12,7 +12,15 @@ export const updateProfile = async (userId, body) => {
     const user = await userRepo.findUserWithRegion(userId);
     if (!user)
         throw new Error("User not found");
-    const data = updateUserBodyDTO(body);
+    // S3 URL에서 key만 추출하는 함수
+    function extractS3Key(url) {
+        const match = url.match(/amazonaws\.com\/(.+)$/);
+        return match ? match[1] : url;
+    }
+    let data = updateUserBodyDTO(body);
+    if (data.profile_photo_url) {
+        data.profile_photo_url = extractS3Key(data.profile_photo_url);
+    }
     return await userRepo.updateUserRaw(userId, data);
 };
 // 회원 탈퇴

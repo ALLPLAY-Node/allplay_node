@@ -5,7 +5,7 @@ export interface FacilityDto {
     district: string;
     address: string;
     operatingHours: string;
-    imageUrl?: string[] | undefined;
+    imageURL?: string[] | undefined;
     introduction: string;
     information: string;
     usageGuide: string;
