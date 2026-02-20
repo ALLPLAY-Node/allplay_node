@@ -13,7 +13,7 @@ export class AuthController {
 
     //프론트엔드로 토큰과 함께 리다이렉트
 
-    const frontendUrl = `http://localhost:5173/login/success?accessToken=${tokens.accessToken}&refreshToken=${tokens.refreshToken}`;
+    const frontendUrl = `https://allsplay.netlify.app/login/success?accessToken=${tokens.accessToken}&refreshToken=${tokens.refreshToken}`;
     res.redirect(frontendUrl);
   };
   // GET /auth/refresh
