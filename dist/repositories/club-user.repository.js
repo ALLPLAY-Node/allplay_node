@@ -20,5 +20,15 @@ export class ClubUserRepository {
         }
         return true;
     };
+    getClubMembers = async (clubId) => {
+        return await prisma.userClubs.findMany({
+            where: {
+                club_id: clubId,
+            },
+            include: {
+                user: true,
+            },
+        });
+    };
 }
 //# sourceMappingURL=club-user.repository.js.map

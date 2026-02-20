@@ -64,7 +64,56 @@ export declare const updateUserStatus: (userId: number) => Promise<{
     updated_at: Date | null;
     region_id: bigint;
 }>;
-export declare const findUserClubs: (userId: number) => Promise<never[]>;
+export declare const findUserClubs: (userId: number) => Promise<({
+    club: {
+        name: string | null;
+        id: bigint;
+        created_at: Date | null;
+        updated_at: Date | null;
+        region_id: bigint;
+        contact_number: string | null;
+        capacity: number | null;
+        activity_frequency: string | null;
+        join_requirement: string | null;
+        summary: string | null;
+        level: import("@prisma/client").$Enums.Level | null;
+        age: import("@prisma/client").$Enums.Age | null;
+        homepage_url: string | null;
+        sport_type_id: bigint;
+    };
+} & {
+    id: bigint;
+    user_id: bigint;
+    created_at: Date | null;
+    updated_at: Date | null;
+    club_id: bigint;
+    is_leader: boolean | null;
+})[]>;
+export declare const findUserManagedClubs: (userId: number) => Promise<({
+    club: {
+        name: string | null;
+        id: bigint;
+        created_at: Date | null;
+        updated_at: Date | null;
+        region_id: bigint;
+        contact_number: string | null;
+        capacity: number | null;
+        activity_frequency: string | null;
+        join_requirement: string | null;
+        summary: string | null;
+        level: import("@prisma/client").$Enums.Level | null;
+        age: import("@prisma/client").$Enums.Age | null;
+        homepage_url: string | null;
+        sport_type_id: bigint;
+    };
+} & {
+    id: bigint;
+    user_id: bigint;
+    created_at: Date | null;
+    updated_at: Date | null;
+    club_id: bigint;
+    is_leader: boolean | null;
+})[]>;
 export declare const findUserReviews: (userId: number, reviewId?: number) => Promise<{
     id: bigint;
     user_id: bigint;

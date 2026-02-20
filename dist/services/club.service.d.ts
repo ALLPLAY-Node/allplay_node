@@ -11,6 +11,7 @@ export declare class ClubService {
     private sportTypeRepository;
     private clubUserRepository;
     private joinRequestRepository;
+    extractS3Key: (url: string) => string;
     clubAdd: (clubData: ClubRequest, userId: number) => Promise<{
         name: string | null;
         id: bigint;
@@ -62,6 +63,33 @@ export declare class ClubService {
     }[]>;
     approveJoinRequest: (requestId: number, userId: number, clubId: number, status: Status) => Promise<boolean>;
     leaveClub: (userId: number, clubId: number) => Promise<true>;
+    getClubMembers: (clubId: number, userId: number) => Promise<({
+        user: {
+            name: string | null;
+            id: bigint;
+            phone_number: string | null;
+            user_id: string | null;
+            password: string | null;
+            birth: Date | null;
+            gender: import("@prisma/client").$Enums.Gender | null;
+            profile_photo_url: string | null;
+            email: string | null;
+            introduce: string | null;
+            status: boolean | null;
+            inactive_date: Date | null;
+            privacy_agreement: bigint | null;
+            created_at: Date | null;
+            updated_at: Date | null;
+            region_id: bigint;
+        };
+    } & {
+        id: bigint;
+        user_id: bigint;
+        created_at: Date | null;
+        updated_at: Date | null;
+        club_id: bigint;
+        is_leader: boolean | null;
+    })[]>;
 }
 export {};
 //# sourceMappingURL=club.service.d.ts.map

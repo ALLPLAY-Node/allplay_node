@@ -22,4 +22,15 @@ export class ClubUserRepository {
     }
     return true;
   };
+
+  getClubMembers = async (clubId: bigint) => {
+    return await prisma.userClubs.findMany({
+      where: {
+        club_id: clubId,
+      },
+      include: {
+        user: true,
+      },
+    });
+  };
 }

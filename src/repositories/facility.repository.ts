@@ -27,7 +27,7 @@ export class FacilityRepository {
         },
       });
 
-      for (const photo of facility.imageUrl ?? []) {
+      for (const photo of facility.imageURL ?? []) {
         await tx.facilityPhotos.create({
           data: {
             facility_id: facilityData.id,

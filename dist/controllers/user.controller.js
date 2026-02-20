@@ -9,9 +9,15 @@ export const handleGetMe = async (req, res, next) => {
         if (!userId)
             throw new Error("로그인 필요");
         const user = await userSer.getProfile(userId);
+        const { getPresignedUrls } = await import("../services/presignedURL.util.js");
+        const userData = userResponseDTO(user);
+        if (userData.profilePhotoUrl) {
+            const urls = await getPresignedUrls([userData.profilePhotoUrl], "users");
+            userData.profilePhotoUrl = urls[0] || "";
+        }
         res
             .status(StatusCodes.OK)
-            .json({ resultType: "SUCCESS", success: userResponseDTO(user) });
+            .json({ resultType: "SUCCESS", success: userData });
     }
     catch (error) {
         next(error);
@@ -48,7 +54,23 @@ export const handleGetMyClubs = async (req, res, next) => {
     try {
         const userId = req.user?.id;
         const clubs = await userSer.getClubs(userId);
-        res.status(StatusCodes.OK).json({ resultType: "SUCCESS", success: clubs });
+        const clubList = clubs.map((club) => club.club);
+        res
+            .status(StatusCodes.OK)
+            .json({ resultType: "SUCCESS", success: clubList });
+    }
+    catch (error) {
+        next(error);
+    }
+};
+export const handleGetMyManagedClubs = async (req, res, next) => {
+    try {
+        const userId = req.user?.id;
+        const clubs = await userSer.getManagedClubs(userId);
+        const managedClubs = clubs.map((club) => club.club);
+        res
+            .status(StatusCodes.OK)
+            .json({ resultType: "SUCCESS", success: managedClubs });
     }
     catch (error) {
         next(error);

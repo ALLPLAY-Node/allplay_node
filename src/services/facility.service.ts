@@ -17,6 +17,12 @@ export class FacilityService {
   private facilityRepository = new FacilityRepository();
   private reviewRepository = new ReviewRepository();
 
+  // S3 URL에서 key만 추출하는 함수
+  extractS3Key = function (url: string): string {
+    const match = url.match(/amazonaws\.com\/(.+)$/);
+    return match ? match[1]! : url;
+  };
+
   facilityAdd = async (facility: FacilityDto, operator_id: bigint) => {
     const region = await this.regionRepository.findRegionByCityAndDistrict(
       facility.city,
@@ -31,8 +37,14 @@ export class FacilityService {
     if (!sport) {
       throw new SportNotFoundError("Sport type not found", {});
     }
+    let facilityToSave = { ...facility };
+    if (Array.isArray(facility.imageURL)) {
+      facilityToSave.imageURL = facility.imageURL.map((url) =>
+        this.extractS3Key(url),
+      );
+    }
     const data = await this.facilityRepository.addFacility(
-      facility,
+      facilityToSave,
       operator_id,
       region.id,
       sport.id,
@@ -52,8 +64,15 @@ export class FacilityService {
         facilityId.toString(),
       );
     }
+
+    let reviewToSave = { ...review };
+    if (Array.isArray(review.photoUrl)) {
+      reviewToSave.photoUrl = review.photoUrl.map((url) =>
+        this.extractS3Key(url),
+      );
+    }
     const data = await this.reviewRepository.addReview(
-      review,
+      reviewToSave,
       facilityId,
       userId,
     );

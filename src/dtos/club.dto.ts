@@ -98,3 +98,17 @@ export const clubResponseDto = (data: ClubResponseData) => {
     homepageURL: data.homepage_url,
   };
 };
+
+export const memberDtos = (data: any[]) => {
+  const items = [];
+  for (const item of data) {
+    items.push({
+      userId: item.user.id.toString(),
+      userName: item.user.name,
+      userIntroduce: item.user.introduce,
+      regionId: item.user.region_id.toString(),
+      profilePhotoURL: item.user.profile_photo_url,
+    });
+  }
+  return items;
+};

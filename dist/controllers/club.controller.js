@@ -1,5 +1,5 @@
 import { ClubService } from "../services/club.service.js";
-import { joinRequestDtos, clubListDtos, clubResponseDto, } from "../dtos/club.dto.js";
+import { joinRequestDtos, clubListDtos, clubResponseDto, memberDtos, } from "../dtos/club.dto.js";
 import { ClubNotFoundError } from "../errors.js";
 import { StatusCodes } from "http-status-codes";
 export class ClubController {
@@ -33,6 +33,11 @@ export class ClubController {
         const data = await this.clubService.getClubs(regionId, ageGroup, keyword, sportId, cursor);
         const len = data.clubs.length - 1;
         const responseClubs = clubListDtos(data.clubs);
+        // clubPhotoURL을 프리사인드 URL로 변환
+        const { getPresignedUrls } = await import("../services/presignedURL.util.js");
+        for (const club of responseClubs) {
+            club.clubPhotoURL = await getPresignedUrls(club.clubPhotoURL, "clubs");
+        }
         res.status(StatusCodes.OK).success("동호회 목록", {
             items: responseClubs,
             cursor: data.clubs[len]?.id?.toString() ?? null,
@@ -45,7 +50,11 @@ export class ClubController {
         if (!club) {
             throw new ClubNotFoundError("동호회를 찾을 수 없습니다", { clubId });
         }
-        res.status(StatusCodes.OK).success("동호회 정보", clubResponseDto(club));
+        // clubPhotoURL을 프리사인드 URL로 변환
+        const { getPresignedUrls } = await import("../services/presignedURL.util.js");
+        const clubData = clubResponseDto(club);
+        clubData.clubPhotoURL = await getPresignedUrls(clubData.clubPhotoURL, "clubs");
+        res.status(StatusCodes.OK).success("동호회 정보", clubData);
     };
     clubJoin = async (req, res, next) => {
         const userId = req.user.id;
@@ -78,6 +87,14 @@ export class ClubController {
         const clubId = Number(req.params.clubId);
         await this.clubService.leaveClub(userId, clubId);
         res.status(StatusCodes.OK).success("탈퇴 완료", {});
+    };
+    getClubMembers = async (req, res, next) => {
+        const clubId = Number(req.params.clubId);
+        const userId = req.user.id;
+        const members = await this.clubService.getClubMembers(clubId, userId);
+        res.status(StatusCodes.OK).success("동호회 회원 목록", {
+            items: memberDtos(members),
+        });
     };
 }
 //# sourceMappingURL=club.controller.js.map

@@ -94,4 +94,11 @@ export declare const clubResponseDto: (data: ClubResponseData) => {
     contact: string | null;
     homepageURL: string | null;
 };
+export declare const memberDtos: (data: any[]) => {
+    userId: any;
+    userName: any;
+    userIntroduce: any;
+    regionId: any;
+    profilePhotoURL: any;
+}[];
 //# sourceMappingURL=club.dto.d.ts.map
